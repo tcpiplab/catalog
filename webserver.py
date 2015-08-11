@@ -59,8 +59,11 @@ class webServerHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 output = ""
                 output += "<html><body>"
-                # TODO iterate through restaurant_list
-                output += "<h1>" + restaurant_list + "</h1>"
+                output += "<h1>"
+                # Iterate through the object to print all names.
+                for restaurant in restaurant_list:
+                    output += restaurant.name + "<br>"
+                output += "</h1>"
                 output += "</body></html>"
                 self.wfile.write(output)
                 print output
