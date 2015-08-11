@@ -8,19 +8,19 @@
 # Objectives:
 # 1. Opening http://localhost:8080/restaurants lists all the restaurant names
 #    in the database.
-# 2. After the name of each database there is a link to edit and delete each 
+# 2. After the name of each database there is a link to edit and delete each
 #    restaurant.
 # 3. There is a page to create new restaurants at
-#    http://localhost:8080/restaurants/new with a form for creating a new 
+#    http://localhost:8080/restaurants/new with a form for creating a new
 #    restaurant.
-# 4. Users can rename a restaurant by visiting 
+# 4. Users can rename a restaurant by visiting
 #    http://localhost:8080/restaurant/id/edit.
 # 5. Clicking 'delete' takes a user to a confirmation page that then sends a
 #    POST command to the database to delete the selected restaurant.
 
 
 # Dependencies
-# Web server: 
+# Web server:
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
 # Database ORM and engine:
@@ -40,7 +40,7 @@ engine = create_engine('sqlite:///restaurantmenu.db')
 # their corresponding table in the database.
 Base.metadata.bind = engine
 
-# Create a sessionmaker object to establish a link of communications between 
+# Create a sessionmaker object to establish a link of communications between
 # our code executions and the engine object created in the previous statement.
 DBSession = sessionmaker(bind = engine)
 
@@ -109,15 +109,15 @@ class webServerHandler(BaseHTTPRequestHandler):
 
 # Objective 1
 def queryAllRestaurants():
-  """
-  Query the Restaurant table and return an object containing the restaurant 
-  names sorted alphabetically.
-  """
-  # Create an object containing a list of all rows in the Restaurant table, 
-  # and sort by name.
-  restaurants = session.query(Restaurant).order_by(Restaurant.name).all()
-  
-  return restaurants
+    """
+    Query the Restaurant table and return an object containing the restaurant
+    names sorted alphabetically.
+    """
+    # Create an object containing a list of all rows in the Restaurant table,
+    # and sort by name.
+    restaurants = session.query(Restaurant).order_by(Restaurant.name).all()
+
+    return restaurants
 
 def main():
     try:
@@ -130,4 +130,4 @@ def main():
         server.socket.close()
 
 if __name__ == '__main__':
-  main()
+    main()
