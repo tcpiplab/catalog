@@ -29,7 +29,23 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine, desc
 # From our existing database:
-from restaurantmenu import Base, Restaurant, MenuItem
+from database_setup import Base, Restaurant, MenuItem
+
+
+# Database connection code needs to run first:
+# Specify which database engine to communicate with and which database file.
+engine = create_engine('sqlite:///restaurantmenu.db')
+
+# Bind the engine to the Base class. This connects our class definitions to
+# their corresponding table in the database.
+Base.metadata.bind = engine
+
+# Create a sessionmaker object to establish a link of communications between 
+# our code executions and the engine object created in the previous statement.
+DBSession = sessionmaker(bind = engine)
+
+# This is our session
+session = DBSession()
 
 
 class webServerHandler(BaseHTTPRequestHandler):
@@ -100,18 +116,3 @@ def main():
 
 if __name__ == '__main__':
   main()
-
-  # Database connection code
-  # Specify which database engine to communicate with and which database file.
-  engine = create_engine('sqlite:///restaurantmenu.db')
-
-  # Bind the engine to the Base class. This connects our class definitions to
-  # their corresponding table in the database.
-  Base.metadata.bind = engine
-
-  # Create a sessionmaker object to establish a link of communications between 
-  # our code executions and the engine object created in the previous statement.
-  DBSession = sessionmaker(bind = engine)
-
-  # This is our session
-  session = DBSession()
