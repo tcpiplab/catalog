@@ -64,16 +64,11 @@ class webServerHandler(BaseHTTPRequestHandler):
                 for restaurant in restaurant_list:
                     output += "        <li>\n"  
                     output += "           " + restaurant.name + "\n"
-                    output += '''        <form method='POST' '''+ \
-                              '''enctype='multipart/form-data' '''+ \
-                              '''action='/restaurants'>\n'''
-                    output += '''          <h6>Edit\n'''+ \
-                              '''            <input name="message" '''+\
-                              '''type="text">\n'''+ \
-                              '''            <input type="submit" '''+\
-                              '''value="Submit">\n'''+ \
-                              '''          </h6>\n''' + \
-                              '''        </form>\n'''
+                    output += "          <small>\n" 
+                    output += "              <a href=''>Edit</a>"
+                    output +=                "&nbsp;&nbsp;"
+                    output +=                "<a href=''>Delete</a>\n"
+                    output += "          </small>\n"
                     output += "        </li>\n"
 
 
