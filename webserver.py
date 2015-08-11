@@ -73,11 +73,37 @@ class webServerHandler(BaseHTTPRequestHandler):
 
 
 
-                output += "      </ul>\n    </h4>"
+                output += "      </ul>\n    </h4>\n"
                 output += "  </body>\n</html>"
                 self.wfile.write(output)
                 print output
                 return
+
+            if self.path.endswith("/restaurants/new"):
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                output = ""
+                output += "<html>\n  <body>\n"
+                output += "    <h4>\n"
+                output += '''        <form method='POST' '''+ \
+                          '''enctype='multipart/form-data' '''+ \
+                          '''action='/restaurants'>\n'''
+                output += "            <h6>" + \
+                          "Enter the name of the new restaurant."+ \
+                                      "</h6>\n" + \
+                          '''            <input name="message" '''+\
+                          '''type="text">\n'''+ \
+                          '''            <input type="submit" '''+\
+                          '''value="Submit">\n'''+ \
+                          '''          </h6>\n''' + \
+                          '''        </form>\n'''
+                output += "    </h4>\n"
+                output += "  </body>\n</html>"
+                self.wfile.write(output)
+                print output
+                return
+
 
         except IOError:
             self.send_error(404, 'File Not Found: %s' % self.path)
