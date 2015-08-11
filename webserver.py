@@ -59,11 +59,11 @@ class webServerHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 output = ""
                 output += "<html><body>"
-                output += "<h1>"
-                # Iterate through the object to print all names.
+                output += "<h4><ul>"
+                # Iterate through the object. Output unordered HTML list of names
                 for restaurant in restaurant_list:
-                    output += restaurant.name + "<br>"
-                output += "</h1>"
+                    output += "<li>"+ restaurant.name + "</li>"
+                output += "</ul></h4>"
                 output += "</body></html>"
                 self.wfile.write(output)
                 print output
