@@ -32,9 +32,6 @@ from sqlalchemy import create_engine, desc
 from restaurantmenu import Base, Restaurant, MenuItem
 
 
-
-
-
 class webServerHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -91,18 +88,17 @@ class webServerHandler(BaseHTTPRequestHandler):
 
 
 
-# Query 1
-def allPuppyNames():
+# Objective 1
+def queryAllRestaurants():
   """
-  Query the Puppy table and print the puppy names in alphabetical order
+  Query the Restaurant table and return an object containing the restaurant 
+  names sorted alphabetically.
   """
-  # Create an object containing a list of all rows in the Puppy table, 
+  # Create an object containing a list of all rows in the Restaurant table, 
   # and sort by name.
-  puppies = session.query(Puppy).order_by(Puppy.name).all()
-
-  # Iterate through the object to print all names.
-  for puppy in puppies:
-    print puppy.name
+  restaurants = session.query(Restaurant).order_by(Restaurant.name).all()
+  
+  return restaurants
 
 
 
