@@ -88,11 +88,6 @@ def queryAllRestaurants():
   
   return restaurants
 
-
-
-
-
-
 def main():
     try:
         port = 8080
@@ -104,4 +99,19 @@ def main():
         server.socket.close()
 
 if __name__ == '__main__':
-    main()
+  main()
+
+  # Database connection code
+  # Specify which database engine to communicate with and which database file.
+  engine = create_engine('sqlite:///restaurantmenu.db')
+
+  # Bind the engine to the Base class. This connects our class definitions to
+  # their corresponding table in the database.
+  Base.metadata.bind = engine
+
+  # Create a sessionmaker object to establish a link of communications between 
+  # our code executions and the engine object created in the previous statement.
+  DBSession = sessionmaker(bind = engine)
+
+  # This is our session
+  session = DBSession()
