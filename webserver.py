@@ -64,27 +64,24 @@ class webServerHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
                 output = ""
+                output += "<html><body>"
                 # Objective 3 Step 1 - Create a Link to create a new menu item
-                output += "<a href = '/restaurants/new' > Make a New Restaurant Here </a></br></br>"
-                output += "<html>\n  <body>\n"
-                output += "    <h4>\n      <ul>\n"
+                output += "<a href = '/restaurants/new' > \
+                            Make a New Restaurant Here </a></br></br>"
+                output += "<h4><ul>"
                 # Iterate through the object. Output unordered HTML list of names
                 for restaurant in restaurant_list:
-                    output += "        <li>\n"  
-                    output += "           " + restaurant.name + "\n"
-                    output += "          <small>\n" 
-                    output += "              <a href=''>Edit</a>"
-                    output +=                "&nbsp;&nbsp;"
-                    output +=                "<a href=''>Delete</a>\n"
-                    output += "          </small>\n"
-                    output += "        </li>\n"
-
-
-
-                output += "      </ul>\n    </h4>\n"
-                output += "  </body>\n</html>"
+                    output += "<li>"  
+                    output += restaurant.name
+                    output += "<small>" 
+                    output += "<a href='#'>Edit</a>"
+                    output += "&nbsp;&nbsp;"
+                    output += "<a href='#'>Delete</a>"
+                    output += "</small>"
+                    output += "</li>"
+                    output += "</ul></h4>"
+                    output += "</body></html>"
                 self.wfile.write(output)
-                print output
                 return
 
             # Objective 3 Step 2 - Create /restarants/new page
