@@ -149,6 +149,26 @@ def queryAllRestaurants():
 
     return restaurants
 
+
+def addNewRestaurant(the_name):
+    """
+    Create a new row in the Restaurant table with the name column set to the
+    value of the provided argument.
+    """
+    # Create a new object for the new restaurant, specifying its name.
+    # SQLalchemy supposedly prevents SQLi, but I like to be doubly sure,
+    # hence the string formatting.
+    new_restaurant = Restaurant(name = str('{0}'.format(the_name))
+
+    # Stage the change, but it is not written to the DB yet.
+    session.add(new_restaurant)
+
+    # Actually write the change to the DB table.
+    session.commit()
+
+    return
+
+
 def main():
     try:
         port = 8080
