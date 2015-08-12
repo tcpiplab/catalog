@@ -71,16 +71,17 @@ class webServerHandler(BaseHTTPRequestHandler):
                 output += "<h4><ul>"
                 # Iterate through the object. Output unordered HTML list of names
                 for restaurant in restaurant_list:
-                    output += "<li>"  
+                    output += "<li>"
                     output += restaurant.name
-                    output += "<small>" 
+                    output += "&nbsp;&nbsp;"
+                    output += "<small>"
                     output += "<a href='#'>Edit</a>"
                     output += "&nbsp;&nbsp;"
                     output += "<a href='#'>Delete</a>"
                     output += "</small>"
                     output += "</li>"
-                    output += "</ul></h4>"
-                    output += "</body></html>"
+                output += "</ul></h4>"
+                output += "</body></html>"
                 self.wfile.write(output)
                 return
 
