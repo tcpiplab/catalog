@@ -21,11 +21,14 @@
 
 # Dependencies
 # Web server:
+# https://docs.python.org/2/library/basehttpserver.html
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+# https://docs.python.org/2/library/cgi.html
 import cgi
 # Database ORM and engine:
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+# http://docs.sqlalchemy.org/en/latest/orm/internals.html
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine, desc
 # From our existing database:
@@ -58,17 +61,30 @@ class webServerHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         try:
+            # From the BaseHTTPServer.BaseHTTPRequestHandler class, path is an
+            # instance variable containing the request path.
+            #
+            # Inherited from the sqlalchemy.sql.operators.ColumnOperators class,
+            # the endswith() method, in a column context, produces the SQL 
+            # clause LIKE '%whatever>'.
             if self.path.endswith("/restaurants"):
+                # Call the method that uses SQLalchemy to do the query.
                 restaurant_list = queryAllRestaurants()
+
+                # Answer the HTTP GET with HTTP headers.
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
+
+                # Finish answering the HTTP GET with HTML.
                 output = ""
                 output += "<html><body>"
+
                 # Objective 3 Step 1 - Create a Link to create a new menu item
                 output += "<a href = '/restaurants/new' > \
                             Make a New Restaurant Here </a></br></br>"
                 output += "<h4><ul>"
+
                 # Iterate through the object. Output unordered HTML list of names
                 for restaurant in restaurant_list:
                     output += "<li>"
@@ -82,36 +98,73 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += "</li>"
                 output += "</ul></h4>"
                 output += "</body></html>"
+
+                # From the BaseHTTPServer.BaseHTTPRequestHandler() class, wfile
+                # is an instance variable that contains the output stream for 
+                # writing a response back to the client. Proper adherence to the
+                # HTTP protocol must be used when writing to this stream.
+                #
+                # We're calling the write() file object method to write a string
+                # to the wfile file. There is no return value. Due to buffering,
+                # the string may not actually show up in the file until the 
+                # flush() or close() method is called. See
+                # https://docs.python.org/2/library/stdtypes.html#file-objects
                 self.wfile.write(output)
                 return
 
             # Objective 3 Step 2 - Create /restarants/new page
+            # Create a page for adding new restaurants to the database.
+            # path.endswith() is explained in previous comments.
             if self.path.endswith("/restaurants/new"):
+                # See the previous if() block for additional relevant comments.
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
                 output = ""
                 output += "<html><body>"
-                output += "<h1>Make a New Restaurant</h1>"
+                output += "<h2>Make a New Restaurant</h2>"
+
+                # Our do_GET handler for /restaurants/new/ needs to send HTML 
+                # for a link to a POST at the same address, which will be 
+                # handled in do_POST, below.
                 output += "<form method = 'POST' enctype='multipart/form-data' \
                            action = '/restaurants/new'>"
+
+                # newRestaurantName contains the user input our POST will need.
                 output += "<input name = 'newRestaurantName' type = 'text' \
                             placeholder = 'New Restaurant Name' > "
                 output += "<input type='submit' value='Create'>"
                 output += "</form></body></html>"
                 self.wfile.write(output)
-                print output
                 return
 
-
+        # IOError is an exception type external to Python, from the 
+        # EnvironmentError class. Raised when an I/O operation (such as a print 
+        # statement, the built-in open() function or a method of a file object) 
+        # fails for an I/O-related reason, e.g., “file not found” or “disk full”.
+        # https://docs.python.org/2/library/exceptions.html#exceptions.IOError.
         except IOError:
+            # From the BaseHTTPRequestHandler class, the send_error() method
+            # sends and logs a complete error reply to the client. The HTTP 
+            # error code is mandatory; the message is optional.
             self.send_error(404, 'File Not Found: %s' % self.path)
 
     # Objective 3 Step 3- Make POST method
     def do_POST(self):
         try:
+            # Handle POSTs to the restaurants/new URL.
             if self.path.endswith("/restaurants/new"):
+                # cgi.parse_header() Parse a MIME header (such as Content-Type) 
+                # into a main value and a dictionary of parameters.
+                # Here ctype means Content-Type, not to be confused with ctypes,
+                # and pdict is a dictionary of parameters.
                 ctype, pdict = cgi.parse_header(
+                    # The headers object is an instance variable of the 
+                    # BaseHTTPRequestHandler class.
+                    # The getheaders() method seems to come from the 
+                    # httplib.HTTPResponse class. If so, I can't find how 
+                    # it is inherited. 
+                    # https://docs.python.org/2/library/httplib.html
                     self.headers.getheader('content-type'))
                 if ctype == 'multipart/form-data':
                     fields = cgi.parse_multipart(self.rfile, pdict)
