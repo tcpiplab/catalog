@@ -195,9 +195,8 @@ class webServerHandler(BaseHTTPRequestHandler):
                     # messagecontent[0] to the name column.
                     session.commit()
 
-                    # Send the response headers to the client.
-                    # Not sure why the udacity coder is returning HTTP 301 
-                    # instead of 200. But there is probably a very good reason.
+                    # Send the response headers, redirecting the client back to
+                    # the page listing all restaurants.
                     self.send_response(301)
                     self.send_header('Content-type', 'text/html')
                     self.send_header('Location', '/restaurants')
