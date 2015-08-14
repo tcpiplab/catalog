@@ -141,7 +141,7 @@ class webServerHandler(BaseHTTPRequestHandler):
         # IOError is an exception type external to Python, from the 
         # EnvironmentError class. Raised when an I/O operation (such as a print 
         # statement, the built-in open() function or a method of a file object) 
-        # fails for an I/O-related reason, e.g., “file not found” or “disk full”.
+        # fails for an I/O-related reason, e.g., "file not found" or "disk full".
         # https://docs.python.org/2/library/exceptions.html#exceptions.IOError.
         except IOError:
             # From the BaseHTTPRequestHandler class, the send_error() method
@@ -180,9 +180,12 @@ class webServerHandler(BaseHTTPRequestHandler):
                     # Grab the user input from the HTML form. Call the built-in
                     # dictionary function get(). It will return the value for 
                     # the 'newRestaurantName' key if it is in the dictionary.
+                    # messagecontent will be a string.
                     messagecontent = fields.get('newRestaurantName')
 
                     # Create new Restaurant Object w/ SQLalchemy
+                    # But it seems like messagecontent is being treated as a 
+                    # list here. otherwise [0] would be just one letter. Right?
                     newRestaurant = Restaurant(name=messagecontent[0])
                     session.add(newRestaurant)
                     session.commit()
@@ -210,6 +213,17 @@ def queryAllRestaurants():
     restaurants = session.query(Restaurant).order_by(Restaurant.name).all()
 
     return restaurants
+
+
+# Objective 3 Step 3
+#def createNewRestaurant():
+#    """
+#    Given 
+#    """
+# Use SQLalchemy to create new row in the Restaurant table.
+#    newRestaurant = Restaurant(name=messagecontent[0])
+#    session.add(newRestaurant)
+#    session.commit()
 
 
 def main():
