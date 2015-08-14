@@ -180,14 +180,19 @@ class webServerHandler(BaseHTTPRequestHandler):
                     # Grab the user input from the HTML form. Call the built-in
                     # dictionary function get(). It will return the value for 
                     # the 'newRestaurantName' key if it is in the dictionary.
-                    # messagecontent will be a string.
+                    # messagecontent will be a list containing one item.
                     messagecontent = fields.get('newRestaurantName')
 
                     # Create new Restaurant Object w/ SQLalchemy
-                    # But it seems like messagecontent is being treated as a 
-                    # list here. otherwise [0] would be just one letter. Right?
+                    # Set name to the value of the first/only item in the list.
                     newRestaurant = Restaurant(name=messagecontent[0])
+                    
+                    # Stage the new object.
                     session.add(newRestaurant)
+                    # Write it to the restaurantmenu.db database, as defined in 
+                    # the database_setup.Restaurant class. Specifically, create
+                    # a new row in the Restaurant table, writing the value of 
+                    # messagecontent[0] to the name column.
                     session.commit()
 
                     # Send the response headers to the client.
@@ -213,17 +218,6 @@ def queryAllRestaurants():
     restaurants = session.query(Restaurant).order_by(Restaurant.name).all()
 
     return restaurants
-
-
-# Objective 3 Step 3
-#def createNewRestaurant():
-#    """
-#    Given 
-#    """
-# Use SQLalchemy to create new row in the Restaurant table.
-#    newRestaurant = Restaurant(name=messagecontent[0])
-#    session.add(newRestaurant)
-#    session.commit()
 
 
 def main():
