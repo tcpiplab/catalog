@@ -81,8 +81,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                 output += "<html><body>"
 
                 # Objective 3 Step 1 - Create a Link to create a new menu item
-                output += "<a href = '/restaurants/new' > \
-                            Make a New Restaurant Here </a></br></br>"
+                output += "<a href = '/restaurants/new' > Make a New Restaurant Here </a></br></br>"
                 output += "<h4><ul>"
 
                 # Iterate through the object. Output unordered HTML list of names
@@ -91,7 +90,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += restaurant.name
                     output += "&nbsp;&nbsp;"
                     output += "<small>"
-                    output += "<a href='#'>Edit</a>"
+                    output += "<a href='/restaurants/%s/edit'>Edit</a>" % restaurant.id
                     output += "&nbsp;&nbsp;"
                     output += "<a href='#'>Delete</a>"
                     output += "</small>"
@@ -112,6 +111,42 @@ class webServerHandler(BaseHTTPRequestHandler):
                 self.wfile.write(output)
                 return
 
+            # Create a handler for the Edit page.
+            if self.path.endswith("/edit"):
+                # Grab the id number of the link they clicked. It is the third
+                # element of an indexed array created from the path.
+                restaurantIDPath = self.path.split("/")[2]
+
+                # Use SQLalchemy to query the id column of the Restaurant table
+                # and set a variable to that value.
+                myRestaurantQuery = session.query(Restaurant).filter_by(id = restaurantIDPath).one()
+                # If the query returned a value
+                if myRestaurantQuery != [] :
+                    # Send the response headers and HTML.
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/html')
+                    self.end_headers()
+                    output = "<html><body>"
+                    output += "<h2>"
+                    output += myRestaurantQuery.name
+                    output += "</h2>"
+                    # Create a POST url link containing the restaurant id.
+                    # We define a do_POST handler for it below.
+                    output += "<form method='POST' enctype='multipart/form-data' action = '/restaurants/%s/edit' >" % restaurantIDPath
+
+                    # newRestaurantName will contain the user input. The HTML
+                    # placholder attribute is a short hint that is displayed in 
+                    # the input field before the user enters a value. Set it to
+                    # the current name of the restaurant.
+                    output += "<input name = 'newRestaurantName' type='text' placeholder = '%s' >" % myRestaurantQuery.name
+                    output += "<input type = 'submit' value = 'Rename'>"
+                    output += "</form>"
+                    output += "</body></html>"
+
+                    # Send it all to the client
+                    self.wfile.write(output)
+
+
             # Objective 3 Step 2 - Create /restarants/new page
             # Create a page for adding new restaurants to the database.
             # path.endswith() is explained in previous comments.
@@ -127,12 +162,10 @@ class webServerHandler(BaseHTTPRequestHandler):
                 # Our do_GET handler for /restaurants/new/ needs to send HTML 
                 # for a link to a POST at the same address, which will be 
                 # handled in do_POST, below.
-                output += "<form method = 'POST' enctype='multipart/form-data' \
-                           action = '/restaurants/new'>"
+                output += "<form method = 'POST' enctype='multipart/form-data'  action = '/restaurants/new'>"
 
                 # newRestaurantName contains the user input our POST will need.
-                output += "<input name = 'newRestaurantName' type = 'text' \
-                            placeholder = 'New Restaurant Name' > "
+                output += "<input name = 'newRestaurantName' type = 'text' placeholder = 'New Restaurant Name' > "
                 output += "<input type='submit' value='Create'>"
                 output += "</form></body></html>"
                 self.wfile.write(output)
@@ -197,6 +230,26 @@ class webServerHandler(BaseHTTPRequestHandler):
 
                     # Send the response headers, redirecting the client back to
                     # the page listing all restaurants.
+                    self.send_response(301)
+                    self.send_header('Content-type', 'text/html')
+                    self.send_header('Location', '/restaurants')
+                    self.end_headers()
+
+            # Create a handler for POSTs to /restaurants/edit.
+            # Similar code is commented above.
+            if self.path.endswith("/edit"):
+                ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+                if ctype == 'multipart/form-data':
+                    fields = cgi.parse_multipart(self.rfile, pdict)
+                messagecontent = fields.get('newRestaurantName')
+                restaurantIDPath = self.path.split("/")[2]
+
+                myRestaurantQuery = session.query(Restaurant).filter_by(id = restaurantIDPath).one()
+
+                if myRestaurantQuery != [] :
+                    myRestaurantQuery.name = messagecontent[0]
+                    session.add(myRestaurantQuery)
+                    session.commit()
                     self.send_response(301)
                     self.send_header('Content-type', 'text/html')
                     self.send_header('Location', '/restaurants')
