@@ -166,8 +166,20 @@ class webServerHandler(BaseHTTPRequestHandler):
                     # it is inherited. 
                     # https://docs.python.org/2/library/httplib.html
                     self.headers.getheader('content-type'))
+
+                # If the content-type header is multipart/form-data,
                 if ctype == 'multipart/form-data':
+                    # The arguments to cgi.parse_multipart(): rfile is the input
+                    # file; pdict is a dictionary containing other parameters in
+                    # the Content-Type header.
+                    #
+                    # The fields object will be a dictionary. The keys are the 
+                    # field names. Each value is a list of values for that field.
                     fields = cgi.parse_multipart(self.rfile, pdict)
+
+                    # Grab the user input from the HTML form. Call the built-in
+                    # dictionary function get(). It will return the value for 
+                    # the 'newRestaurantName' key if it is in the dictionary.
                     messagecontent = fields.get('newRestaurantName')
 
                     # Create new Restaurant Object w/ SQLalchemy
@@ -175,6 +187,9 @@ class webServerHandler(BaseHTTPRequestHandler):
                     session.add(newRestaurant)
                     session.commit()
 
+                    # Send the response headers to the client.
+                    # Not sure why the udacity coder is returning HTTP 301 
+                    # instead of 200. But there is probably a very good reason.
                     self.send_response(301)
                     self.send_header('Content-type', 'text/html')
                     self.send_header('Location', '/restaurants')
