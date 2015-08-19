@@ -211,6 +211,24 @@ class webServerHandler(BaseHTTPRequestHandler):
     # Objective 3 Step 3- Make POST method
     def do_POST(self):
         try:
+            # Handle POSTS to the restaurants/delete URL.
+            if self.path.endswith("/delete"):
+                # Grad the id from the inbound URL.
+                restaurantIDPath = self.path.split("/")[2]
+
+                # SQLalchemy query to grab that restaurant's row from the DB.
+                myRestaurantQuery = session.query(Restaurant).filter_by(
+                    id=restaurantIDPath).one()
+
+                # If the query returned data, output HTTP redirect to home page. 
+                if myRestaurantQuery:
+                    session.delete(myRestaurantQuery)
+                    session.commit()
+                    self.send_response(301)
+                    self.send_header('Content-type', 'text/html')
+                    self.send_header('Location', '/restaurants')
+                    self.end_headers()
+
             # Handle POSTs to the restaurants/new URL.
             if self.path.endswith("/restaurants/new"):
                 # cgi.parse_header() Parse a MIME header (such as Content-Type) 
