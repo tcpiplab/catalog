@@ -216,13 +216,15 @@ class webServerHandler(BaseHTTPRequestHandler):
                 # Grad the id from the inbound URL.
                 restaurantIDPath = self.path.split("/")[2]
 
-                # SQLalchemy query to grab that restaurant's row from the DB.
+                # SQLalchemy query to grab that restaurant's ID from the DB.
                 myRestaurantQuery = session.query(Restaurant).filter_by(
                     id=restaurantIDPath).one()
 
                 # If the query returned data, output HTTP redirect to home page. 
                 if myRestaurantQuery:
+                    # SQLalchemy query to delete the restaurant by ID.
                     session.delete(myRestaurantQuery)
+                    # Write to the database.
                     session.commit()
                     self.send_response(301)
                     self.send_header('Content-type', 'text/html')
@@ -292,7 +294,9 @@ class webServerHandler(BaseHTTPRequestHandler):
 
                 if myRestaurantQuery != [] :
                     myRestaurantQuery.name = messagecontent[0]
+                    # SQLalchemy query to INSERT newRestaurantName into DB.
                     session.add(myRestaurantQuery)
+                    # Write to the database.
                     session.commit()
                     self.send_response(301)
                     self.send_header('Content-type', 'text/html')
