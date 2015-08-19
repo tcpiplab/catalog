@@ -92,7 +92,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += "<small>"
                     output += "<a href='/restaurants/%s/edit'>Edit</a>" % restaurant.id
                     output += "&nbsp;&nbsp;"
-                    output += "<a href='#'>Delete</a>"
+                    output += "<a href='/restaurants/%s/delete'>Delete</a>"
                     output += "</small>"
                     output += "</li>"
                 output += "</ul></h4>"
@@ -144,6 +144,32 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += "</body></html>"
 
                     # Send it all to the client
+                    self.wfile.write(output)
+
+             # A confirmation page for deletions
+             if self.path.endswith("/delete"):
+                # Grab the restaurant ID from the URL they clicked.
+                restaurantIDPath = self.path.split("/")[2]
+
+                # Use SQLalchemy to query for that restaurant ID.
+                myRestaurantQuery = session.query(Restaurant).filter_by(
+                    id=restaurantIDPath).one()
+
+                # If the query returned data, send HTTP headers and HTML.
+                if myRestaurantQuery:
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/html')
+                    self.end_headers()
+                    output = ""
+                    output += "<html><body>"
+                    # Output the restaurant name we retrieved.
+                    output += "<h1>Are you sure you want to delete %s?" % myRestaurantQuery.name
+                    # Make the form POST URL contain the ID in the path.
+                    output += "<form method='POST' enctype = 'multipart/form-data' action = '/restaurants/%s/delete'>" % restaurantIDPath
+                    output += "<input type = 'submit' value = 'Delete'>"
+                    output += "</form>"
+                    output += "</body></html>"
+                    # Output the headers and HTML to the client.
                     self.wfile.write(output)
 
 
