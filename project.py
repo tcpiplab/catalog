@@ -57,6 +57,24 @@ def restaurantMenu(restaurant_id):
     return output
 
 
+# Task 1: Create route for newMenuItem function here
+
+def newMenuItem(restaurant_id):
+    return "page to create a new menu item. Task 1 complete!"
+
+# Task 2: Create route for editMenuItem function here
+
+
+def editMenuItem(restaurant_id, menu_id):
+    return "page to edit a menu item. Task 2 complete!"
+
+# Task 3: Create a route for deleteMenuItem function here
+
+
+def deleteMenuItem(restaurant_id, menu_id):
+    return "page to delete a menu item. Task 3 complete!"
+
+
 # If this file is called directly, i.e., not called as an include, run the code 
 # through the Python interpreter.
 if __name__ == '__main__':
