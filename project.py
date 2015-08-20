@@ -34,6 +34,9 @@ session = DBSession()
 # app.route function. The app.route function will call restaurantMenu() whenever
 # the web server receives a request with a URL that matches the argument. 
 # Thusly, we bind a function to a URL.
+# Note that the trailing slash will allow inbound URLs with or without a 
+# trailing slash. A URL without it will be "redirected" (not HTTP redirect) 
+# to the path with it. See http://flask.pocoo.org/docs/0.10/quickstart/#routing
 @app.route('/restaurants/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
