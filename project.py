@@ -29,19 +29,34 @@ DBSession = sessionmaker(bind = engine)
 # session.rollback()
 session = DBSession()
 
-
  
 # Create two decorators which will wrap our HelloWorld() function in Flask's
 # app.route function. The app.route function will call HelloWorld() whenever
 # the web server receives a request with a URL that matches either of these
-# arguments.
+# arguments. Thusly, we bind a function to a URL.
 # The decorators work in sequence, a bit like hidden redirects to the next 
 # route, ultimately resulting in the call to HelloWorld(). But they're not
 # actually HTTP redirects. They're more like aliases.
 @app.route('/')
 @app.route('/hello')
 def HelloWorld():
-    return "Hello World"
+    # Call SQLalchemy to query the Restaurant table for the first restaurant.
+    restaurant = session.query(Restaurant).first()
+    # Call SQLalchemy to query for that restaurant's menu items.
+    items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
+    # Store the outputed HTML in a string called output.
+    output = ''
+    for i in items:
+        output += i.name
+        output += '</br>'
+        output += i.price
+        output += '</br>'
+        output += i.description
+        output += '</br>'
+        output += '</br>'
+    # Return output to Flask, which will send it to the client.
+    return output
+
 
 # If this file is called directly, i.e., not called as an include, run the code 
 # through the Python interpreter.
