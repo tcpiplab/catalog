@@ -30,18 +30,14 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
  
-# Create two decorators which will wrap our restaurantMenu() function in Flask's
+# Create a decorator which will wrap our restaurantMenu() function in Flask's
 # app.route function. The app.route function will call restaurantMenu() whenever
-# the web server receives a request with a URL that matches either of these
-# arguments. Thusly, we bind a function to a URL.
-# The decorators work in sequence, a bit like hidden redirects to the next 
-# route, ultimately resulting in the call to restaurantMenu(). But they're not
-# actually HTTP redirects. They're more like aliases.
-@app.route('/')
-@app.route('/hello')
-def restaurantMenu():
-    # Call SQLalchemy to query the Restaurant table for the first restaurant.
-    restaurant = session.query(Restaurant).first()
+# the web server receives a request with a URL that matches the argument. 
+# Thusly, we bind a function to a URL.
+@app.route('/restaurants/<int:restaurant_id>/')
+def restaurantMenu(restaurant_id):
+    # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     # Call SQLalchemy to query for that restaurant's menu items.
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
     # Store the outputed HTML in a string called output.
