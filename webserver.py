@@ -92,7 +92,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += "<small>"
                     output += "<a href='/restaurants/%s/edit'>Edit</a>" % restaurant.id
                     output += "&nbsp;&nbsp;"
-                    output += "<a href='/restaurants/%s/delete'>Delete</a>"
+                    output += "<a href='/restaurants/%s/delete'>Delete</a>" % restaurant.id
                     output += "</small>"
                     output += "</li>"
                 output += "</ul></h4>"
@@ -152,7 +152,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                 restaurantIDPath = self.path.split("/")[2]
 
                 # Use SQLalchemy to query for that restaurant ID.
-                myRestaurantQuery = session.query(Restaurant).filter_by(id=restaurantIDPath).one()
+                myRestaurantQuery = session.query(Restaurant).filter_by(id = restaurantIDPath).one()
 
                 # If the query returned data, send HTTP headers and HTML.
                 if myRestaurantQuery:
@@ -216,8 +216,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                 restaurantIDPath = self.path.split("/")[2]
 
                 # SQLalchemy query to grab that restaurant's ID from the DB.
-                myRestaurantQuery = session.query(Restaurant).filter_by(
-                    id=restaurantIDPath).one()
+                myRestaurantQuery = session.query(Restaurant).filter_by(id = restaurantIDPath).one()
 
                 # If the query returned data, output HTTP redirect to home page. 
                 if myRestaurantQuery:
