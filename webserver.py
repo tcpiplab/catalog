@@ -146,14 +146,13 @@ class webServerHandler(BaseHTTPRequestHandler):
                     # Send it all to the client
                     self.wfile.write(output)
 
-             # A confirmation page for deletions
-             if self.path.endswith("/delete"):
+            # A confirmation page for deletions
+            if self.path.endswith("/delete"):
                 # Grab the restaurant ID from the URL they clicked.
                 restaurantIDPath = self.path.split("/")[2]
 
                 # Use SQLalchemy to query for that restaurant ID.
-                myRestaurantQuery = session.query(Restaurant).filter_by(
-                    id=restaurantIDPath).one()
+                myRestaurantQuery = session.query(Restaurant).filter_by(id=restaurantIDPath).one()
 
                 # If the query returned data, send HTTP headers and HTML.
                 if myRestaurantQuery:
