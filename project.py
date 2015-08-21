@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, render_template
+
 # Create an instance of the Flask class with the name of the running application
 # as the argument. 
 app = Flask(__name__)
@@ -41,20 +42,14 @@ session = DBSession()
 def restaurantMenu(restaurant_id):
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+    
     # Call SQLalchemy to query for that restaurant's menu items.
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
-    # Store the outputed HTML in a string called output.
-    output = ''
-    for i in items:
-        output += i.name
-        output += '</br>'
-        output += i.price
-        output += '</br>'
-        output += i.description
-        output += '</br>'
-        output += '</br>'
-    # Return output to Flask, which will send it to the client.
-    return output
+
+    # Return a template (located in a dir called templates) and pass the 
+    # queries so that the escape code in the template has access to the 
+    # variables that will populate the template.
+    return render_template('menu.html', restaurant=restaurant, items=items)
 
 
 # Task 1: Create route for newMenuItem function here
