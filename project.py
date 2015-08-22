@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 
 # Create an instance of the Flask class with the name of the running application
 # as the argument. 
@@ -53,9 +53,35 @@ def restaurantMenu(restaurant_id):
 
 
 # Task 1: Create route for newMenuItem function here
+# Create a decorator from Flask.app.route() to bind newMenuItem with the URL
+# /restaurants/<id>/new/, allow GET or POST methods.
 @app.route('/restaurants/<int:restaurant_id>/new/', methods=['GET','POST'])
 def newMenuItem(restaurant_id):
-    return "page to create a new menu item. Task 1 complete!"
+    '''
+    Handles GETs or POSTs to '/restaurants/<id>/new/' and persists the user's
+    input to the database, after which, POSTs are redirected to the original
+    URL.
+    Args: int restaurant_id
+    '''
+    # Given the numeric id of a restaurant, answer GETs or POSTs to this URL, 
+    # for the latter, grab the user input
+    # and write it to the database.
+    if request.method == 'POST':
+        # Grab the user input from the HTML form.
+        newItem = MenuItem(name = request.form['name'], restaurant_id = 
+            restaurant_id)
+        # Call SQLalchemy to stage the data to be written...
+        session.add(newItem)
+        # ... and now write the data to the DB.
+        session.commit()
+        return redirect(url_for('restaurantMenu', restaurant_id = 
+            restaurant_id))
+
+    else:
+        # Answer GETs by returning the newmenuitem.html file to the client.
+        return render_template('newmenuitem.html', restaurant_id = 
+            restaurant_id)
+
 
 # Task 2: Create route for editMenuItem function here
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/')
