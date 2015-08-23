@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, flash
 
 # Create an instance of the Flask class with the name of the running application
 # as the argument. 
@@ -75,6 +75,8 @@ def newMenuItem(restaurant_id):
         session.add(newItem)
         # ... and now write the data to the DB.
         session.commit()
+        # Alert the user.
+        flash("New menu item created.")
         # Redirect the client to the menu page for this restaurant.
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
             )
@@ -162,6 +164,8 @@ def deleteMenuItem(restaurant_id, menu_id):
 # If this file is called directly, i.e., not called as an include, run the code 
 # through the Python interpreter.
 if __name__ == '__main__':
+    # Flash will use this key to create sessions for our users.
+    app.secret_key = 'ylic9[,Tah'
     # With debug running, the Flask web server will reload itself each time 
     # it notices a code change. It also provides a debugger in the browser.
     app.debug = True
