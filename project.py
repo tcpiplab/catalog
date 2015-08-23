@@ -102,7 +102,7 @@ def editMenuItem(restaurant_id, menu_id):
     # Given the numeric ids of a restaurant and menu item, answer GETs or POSTs 
     # to this URL. For the latter, grab the user input and write it to the 
     # database. 
-    #Use SQLalchemy to query the MenuItem table for our menu_id.
+    # Use SQLalchemy to query the MenuItem table for our menu_id.
     editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
     if request.method == 'POST':
         # Grab the user input from the HTML form.
@@ -125,9 +125,38 @@ def editMenuItem(restaurant_id, menu_id):
 
 
 # Task 3: Create a route for deleteMenuItem function here
-@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete')
+# Create a decorator from Flask.app.route() to bind deleteMenuItem with the URL
+# /restaurants/<restaurant_id>/<menu_id>/delete/,  allow GET or POST methods.
+@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete', methods=[
+    'GET','POST'])
 def deleteMenuItem(restaurant_id, menu_id):
-    return "page to delete a menu item. Task 3 complete!"
+    '''
+    Handles GETs or POSTs to '/restaurants/<restaurant_id>/<menu_id>/delete/' 
+    and deletes the specified menu item from the database, after which, POSTs 
+    are redirected to the menu page for the restaurant specified by the original 
+    restaurant_id argument.
+
+    Args: int restaurant_id, int menu_id
+    '''
+    # Given the numeric ids of a restaurant and menu item, answer GETs or POSTs 
+    # to this URL. For the latter, delete the corresponding record from the 
+    # database. 
+    # Use SQLalchemy to query the MenuItem table for our menu_id.
+    deletedItem = session.query(MenuItem).filter_by(id = menu_id).one()
+    if request.method == 'POST':
+        # Stage for persisting to the DB.
+        session.delete(deletedItem)
+        # Delete the record from the DB.
+        session.commit()
+        # Redirect the client to the menu page for this restaurant, building
+        # the URL from that specified by the decorator of restaurantMenu().
+        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+            )
+    else:
+        # For GETs, return an edit page for that menu item.
+        return render_template('deletemenuitem.html', restaurant_id = 
+            restaurant_id, menu_id = menu_id, i = deletedItem)
+
 
 
 # If this file is called directly, i.e., not called as an include, run the code 
