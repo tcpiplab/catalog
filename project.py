@@ -32,7 +32,7 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 
-# Make an API endpoint for JSON GET requests.
+# Make an API endpoint for JSON GET requests per restaurant.
 @app.route('/restaurants/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
@@ -44,6 +44,17 @@ def restaurantMenuJSON(restaurant_id):
         restaurant.id).all()
 
     return jsonify(MenuItems=[i.serialize for i in items])
+
+
+# Make an API endpoint for JSON GET requests per menu item.
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def menuItemJSON(restaurant_id, menu_id):
+    # Call SQLalchemy to query the MenuItem table by the menu_id arg.
+    theMenuItem = session.query(MenuItem).filter_by(id = menu_id).all()
+
+    return jsonify(MenuItem=[i.serialize for i in theMenuItem])
+
+
  
 # Create a decorator which will wrap our restaurantMenu() function in Flask's
 # app.route function. The app.route function will call restaurantMenu() whenever
