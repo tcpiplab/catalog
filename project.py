@@ -115,6 +115,8 @@ def editMenuItem(restaurant_id, menu_id):
         session.add(editedItem)
         # Write to the DB.
         session.commit()
+        # Alert the user.
+        flash("Menu item edited.")
         # Redirect the client to the menu page for this restaurant, building
         # the URL from that specified by the decorator of restaurantMenu().
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
@@ -150,6 +152,8 @@ def deleteMenuItem(restaurant_id, menu_id):
         session.delete(deletedItem)
         # Delete the record from the DB.
         session.commit()
+        # Alert the user.
+        flash("Menu item deleted.")
         # Redirect the client to the menu page for this restaurant, building
         # the URL from that specified by the decorator of restaurantMenu().
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
