@@ -1,4 +1,5 @@
-from flask import Flask, render_template, url_for, request, redirect, flash
+from flask import Flask, render_template, url_for, request, redirect, \
+    flash, jsonify
 
 # Create an instance of the Flask class with the name of the running application
 # as the argument. 
@@ -30,6 +31,19 @@ DBSession = sessionmaker(bind = engine)
 # session.rollback()
 session = DBSession()
 
+
+# Make an API endpoint for JSON GET requests.
+@app.route('/restaurants/<int:restaurant_id>/menu/JSON')
+def restaurantMenuJSON(restaurant_id):
+    # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
+    restaurant = session.query(Restaurant).filter_by(id=
+        restaurant_id).one()
+
+    # Call SQLalchemy to query for that restaurant's menu items.
+    items = session.query(MenuItem).filter_by(restaurant_id=
+        restaurant.id).all()
+
+    return jsonify(MenuItems=[i.serialize for i in items])
  
 # Create a decorator which will wrap our restaurantMenu() function in Flask's
 # app.route function. The app.route function will call restaurantMenu() whenever
