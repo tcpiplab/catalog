@@ -108,6 +108,9 @@ def restaurantMenu(restaurant_id):
 # /restaurants/<restaurant_id>/new/, allow GET or POST methods.
 @app.route('/restaurants/<int:restaurant_id>/new/', methods=['GET','POST'])
 def newMenuItem(restaurant_id):
+    # Handle creation of new restaurants in the database.
+    # Answer POSTs by writing user input to the database.
+    # Answer GETs by returning the newmenuitem.html file to the client.
     '''
     Handles GETs or POSTs to '/restaurants/<restaurant_id>/new/' and writes 
     the user's input to the database, after which, POSTs are redirected to the 
