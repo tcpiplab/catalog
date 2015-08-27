@@ -103,7 +103,6 @@ def restaurantMenu(restaurant_id):
     return render_template('menu.html', restaurant=restaurant, items=items)
 
 
-# Task 1: Create route for newMenuItem function here
 # Create a decorator from Flask.app.route() to bind newMenuItem with the URL
 # /restaurants/<restaurant_id>/new/, allow GET or POST methods.
 @app.route('/restaurants/<int:restaurant_id>/new/', methods=['GET','POST'])
@@ -141,7 +140,6 @@ def newMenuItem(restaurant_id):
             restaurant_id)
 
 
-# Task 2: Create route for editMenuItem function here
 # Create a decorator from Flask.app.route() to bind editMenuItem with the URL
 # /restaurants/<restaurant_id>/<menu_id>/edit/, , allow GET or POST methods.
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/', methods=[
