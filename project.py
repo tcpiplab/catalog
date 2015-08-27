@@ -65,6 +65,14 @@ def menuItemJSON(restaurant_id, menu_id):
 # to the path with it. See http://flask.pocoo.org/docs/0.10/quickstart/#routing
 @app.route('/restaurants/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
+# Display a specific restaurant's menu.
+'''
+For the URL: /restaurants/<int:restaurant_id>/,
+return an HTML template populated with the menu
+for that specific restaurant.
+Args:
+    int restaurant_id
+'''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     
