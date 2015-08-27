@@ -157,7 +157,7 @@ def editMenuItem(restaurant_id, menu_id):
     
     and writes the user's input to the database, after which, POSTs are 
     redirected to the menu page for the restaurant specified by the original 
-    restaurant_id argument. GETs simply returns a populated template named 
+    restaurant_id argument. GETs simply return a populated template named 
     editmenuitem.html.
 
     Args: 
@@ -186,25 +186,27 @@ def editMenuItem(restaurant_id, menu_id):
         return render_template('editmenuitem.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
 
 
-
-
-# Task 3: Create a route for deleteMenuItem function here
-# Create a decorator from Flask.app.route() to bind deleteMenuItem with the URL
-# /restaurants/<restaurant_id>/<menu_id>/delete/,  allow GET or POST methods.
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete', methods=[
     'GET','POST'])
 def deleteMenuItem(restaurant_id, menu_id):
+    # Handle deletions of existing menu items in the database.
+    # Answer POSTs by deleting the row in the MenuItem table of the database
+    # which the user specified with two numeric arguments.
+    # Answer GETs by returning the deletemenuitem.html file to the client.
     '''
-    Handles GETs or POSTs to '/restaurants/<restaurant_id>/<menu_id>/delete/' 
+    Handles GETs or POSTs to the URL:
+    
+        /restaurants/<restaurant_id>/<menu_id>/delete/ 
+    
     and deletes the specified menu item from the database, after which, POSTs 
-    are redirected to the menu page for the restaurant specified by the original 
-    restaurant_id argument.
+    are redirected to the menu page for the restaurant specified by the 
+    original restaurant_id argument. GETs simply return a populated template 
+    named deletemenuitem.html.
 
-    Args: int restaurant_id, int menu_id
+    Args: 
+        int restaurant_id
+        int menu_id
     '''
-    # Given the numeric ids of a restaurant and menu item, answer GETs or POSTs 
-    # to this URL. For the latter, delete the corresponding record from the 
-    # database. 
     # Use SQLalchemy to query the MenuItem table for our menu_id.
     deletedItem = session.query(MenuItem).filter_by(id = menu_id).one()
     if request.method == 'POST':
