@@ -34,14 +34,14 @@ session = DBSession()
 
 @app.route('/restaurants/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
-# An API endpoint for JSON GET requests per restaurant.
-'''
-For the URL: /restaurants/<int:restaurant_id>/menu/JSON,
-return a JSON formatted structure containing that specific restaurant's
-menu..
-Args:
-    int restaurant_id
-'''
+    # An API endpoint for JSON GET requests per restaurant.
+    '''
+    For the URL: /restaurants/<int:restaurant_id>/menu/JSON,
+    return a JSON formatted structure containing that specific restaurant's
+    menu..
+    Args:
+        int restaurant_id
+    '''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=
         restaurant_id).one()
@@ -53,9 +53,20 @@ Args:
     return jsonify(MenuItems=[i.serialize for i in items])
 
 
-# Make an API endpoint for JSON GET requests per menu item.
 @app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON')
 def menuItemJSON(restaurant_id, menu_id):
+    # An API endpoint for JSON GET requests per menu item.
+    '''
+    For the URL:
+    
+        /restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON 
+    
+    return a JSON formatted structure containing that specific menu item's
+    data..
+    Args:
+        int restaurant_id
+        int menu_id
+    '''
     # Call SQLalchemy to query the MenuItem table by the menu_id arg.
     theMenuItem = session.query(MenuItem).filter_by(id = menu_id).all()
 
@@ -72,14 +83,14 @@ def menuItemJSON(restaurant_id, menu_id):
 # to the path with it. See http://flask.pocoo.org/docs/0.10/quickstart/#routing
 @app.route('/restaurants/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
-# Display a specific restaurant's menu.
-'''
-For the URL: /restaurants/<int:restaurant_id>/,
-return an HTML template populated with the menu
-for that specific restaurant.
-Args:
-    int restaurant_id
-'''
+    # Display a specific restaurant's menu.
+    '''
+    For the URL: /restaurants/<int:restaurant_id>/,
+    return an HTML template populated with the menu
+    for that specific restaurant.
+    Args:
+        int restaurant_id
+    '''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     
