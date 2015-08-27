@@ -32,9 +32,16 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 
-# Make an API endpoint for JSON GET requests per restaurant.
 @app.route('/restaurants/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
+# An API endpoint for JSON GET requests per restaurant.
+'''
+For the URL: /restaurants/<int:restaurant_id>/menu/JSON,
+return a JSON formatted structure containing that specific restaurant's
+menu..
+Args:
+    int restaurant_id
+'''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=
         restaurant_id).one()
