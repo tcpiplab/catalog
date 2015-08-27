@@ -147,17 +147,23 @@ def newMenuItem(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/', methods=[
     'GET','POST'])
 def editMenuItem(restaurant_id, menu_id):
+    # Handle updates to existing menu items in the database.
+    # Answer POSTs by writing user input to the database.
+    # Answer GETs by returning the editmenuitem.html file to the client.
     '''
-    Handles GETs or POSTs to '/restaurants/<restaurant_id>/<menu_id>/edit/' 
+    Handles GETs or POSTs to the URL:
+    
+        /restaurants/<restaurant_id>/<menu_id>/edit/
+    
     and writes the user's input to the database, after which, POSTs are 
     redirected to the menu page for the restaurant specified by the original 
-    restaurant_id argument.
+    restaurant_id argument. GETs simply returns a populated template named 
+    editmenuitem.html.
 
-    Args: int restaurant_id, int menu_id
+    Args: 
+        int restaurant_id
+        int menu_id
     '''
-    # Given the numeric ids of a restaurant and menu item, answer GETs or POSTs 
-    # to this URL. For the latter, grab the user input and write it to the 
-    # database. 
     # Use SQLalchemy to query the MenuItem table for our menu_id.
     editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
     if request.method == 'POST':
