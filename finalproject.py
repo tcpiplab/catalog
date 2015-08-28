@@ -45,8 +45,8 @@ def allRestaurantsJSON():
     
         /restaurant/JSON
     
-    return a JSON formatted structure containing the name and id  for each 
-    restaurant.
+    return a JSON formatted structure containing the name and id of all 
+    restaurants, sorted by name.
     '''
 
     # Call SQLalchemy to create an object containing a list of all rows in the 
@@ -54,6 +54,8 @@ def allRestaurantsJSON():
     listOfRestaurants = session.query(
         Restaurant).order_by(Restaurant.name).all()
 
+    # Iterate over the list, calling Restaurant.serialize(), 
+    # wrap in flask.jsonify() for JSON output.
     return jsonify(MenuItem=[i.serialize for i in listOfRestaurants])
 
 
