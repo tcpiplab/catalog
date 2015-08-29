@@ -1,7 +1,6 @@
 <html>
 <head>
-	<link rel=stylesheet type=text/css href="{{ url_for('static', 
-	filename='styles.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 <div class = 'pane'>
@@ -26,8 +25,7 @@
 
 	<div>
 		<p>
-			<a href='{{ url_for('newMenuItem', restaurant_id =
-			restaurant.id) }}'>Create New Menu Item</a>
+                    <a href='{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}'>Create New Menu Item</a>
 		</p>
 
 	</div>
@@ -46,13 +44,11 @@
 
 	<div class = "editdeletepane">
 		<p> 
-			<a href='{{ url_for('editMenuItem', restaurant_id =
-			restaurant.id, menu_id=i.id) }}'>Edit</a>
+                    <a href='{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_id=i.id) }}'>Edit</a>
 		</p>
 
 		<p>
-			<a href='{{ url_for('deleteMenuItem', restaurant_id =
-			restaurant.id, menu_id=i.id) }}'>Delete</a>
+                    <a href='{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id=i.id) }}'>Delete</a>
 		</p>
 	
 
