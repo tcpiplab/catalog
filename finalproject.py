@@ -160,7 +160,7 @@ def newMenuItem(restaurant_id):
         # Alert the user.
         flash("New menu item created.")
         # Redirect the client to the menu page for this restaurant.
-        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id)
             )
 
     else:
@@ -205,8 +205,8 @@ def editMenuItem(restaurant_id, menu_id):
         # Alert the user.
         flash("Menu item edited.")
         # Redirect the client to the menu page for this restaurant, building
-        # the URL from that specified by the decorator of restaurantMenu().
-        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+        # the URL from that specified by the decorator of showMenu().
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id)
             )
     else:
         # For GETs, return an edit page for that menu item.
@@ -244,8 +244,8 @@ def deleteMenuItem(restaurant_id, menu_id):
         # Alert the user.
         flash("Menu item deleted.")
         # Redirect the client to the menu page for this restaurant, building
-        # the URL from that specified by the decorator of restaurantMenu().
-        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+        # the URL from that specified by the decorator of showMenu().
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id)
             )
     else:
         # For GETs, return an edit page for that menu item.
