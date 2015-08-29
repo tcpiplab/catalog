@@ -83,6 +83,32 @@ def restaurantMenuJSON(restaurant_id):
     return jsonify(MenuItems=[i.serialize for i in items])
 
 
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def menuItemJSON(restaurant_id, menu_id):
+    # An API endpoint for JSON GET requests per menu item.
+    '''
+    For the URL:
+    
+        /restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON 
+    
+    return a JSON formatted structure containing that specific menu item's
+    data..
+    Args:
+        int restaurant_id
+        int menu_id
+    '''
+    # Call SQLalchemy to query the MenuItem table by the menu_id arg.
+    theMenuItem = session.query(MenuItem).filter_by(id = menu_id).all()
+
+    return jsonify(MenuItem=[i.serialize for i in theMenuItem])
+
+
+
+
+
+
+
+
 
 # If this file is called directly, i.e., not called as an import, run the code 
 # through the Python interpreter.
