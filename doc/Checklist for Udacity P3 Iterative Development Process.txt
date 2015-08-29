@@ -1,0 +1,10 @@
+Checklist for Udacity P3 Iterative Development Process
+
+Mock-ups
+    Add JSON endpoint.
+Routing
+    Make a table of URL/Method/Message.
+Templates & Forms
+CRUD Functionality
+API Endpoints
+Styling & Message Flashing
