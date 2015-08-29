@@ -259,6 +259,9 @@ def showRestaurants():
     return render_template('menu.html')
 
 
+@app.route('/restaurant/new/')
+def newRestaurant():
+    return render_template('newrestaurant.html')
 
 
 
