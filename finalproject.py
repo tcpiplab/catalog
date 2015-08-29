@@ -253,6 +253,17 @@ def deleteMenuItem(restaurant_id, menu_id):
             restaurant_id, menu_id = menu_id, i = deletedItem)
 
 
+@app.route('/restaurant/')
+@app.route('/')
+def showRestaurants():
+    return render_template('menu.html')
+
+
+
+
+
+
+
 
 
 # If this file is called directly, i.e., not called as an import, run the code 
