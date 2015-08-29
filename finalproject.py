@@ -103,9 +103,154 @@ def menuItemJSON(restaurant_id, menu_id):
     return jsonify(MenuItem=[i.serialize for i in theMenuItem])
 
 
+@app.route('/restaurant/<int:restaurant_id>/')
+def showMenu(restaurant_id):
+    # Display a specific restaurant's menu populating an HTML template.
+    '''
+    For the URL: 
+    
+        /restaurant/<int:restaurant_id>/
+
+    return an HTML template populated with the menu for that specific 
+    restaurant.
+    Args:
+        int restaurant_id
+    '''
+    # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
+    restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
+
+    # Call SQLalchemy to query for that restaurant's menu items.
+    items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
+
+    # Return a template (located in a dir called templates) and pass the 
+    # queries so that the escape code in the template has access to the 
+    # variables that will populate the template.
+    return render_template('menu.html', restaurant=restaurant, items=items)
 
 
+# Create a decorator from Flask.app.route() to bind newMenuItem with the URL
+# /restaurant/<restaurant_id>/new/, allow GET or POST methods.
+@app.route('/restaurant/<int:restaurant_id>/new/', methods=['GET','POST'])
+def newMenuItem(restaurant_id):
+    # Handle creation of new restaurants in the database.
+    # Answer POSTs by writing user input to the database.
+    # Answer GETs by returning the newmenuitem.html file to the client.
+    '''
+    Handles GETs or POSTs to the URL:
+    
+        /restaurant/<restaurant_id>/new/ 
+    
+    and writes the user's input to the database, after which, POSTs are 
+    redirected to the menu page for the restaurant specified by the original 
+    restaurant_id argument.
+    
+    Args: 
+        int restaurant_id
+    '''
+    # Given the numeric id of a restaurant, answer GETs or POSTs to this URL. 
+    # For the latter, grab the user input and write it to the database.
+    if request.method == 'POST':
+        # Grab the user input from the HTML form.
+        newItem = MenuItem(name = request.form['name'], restaurant_id =
+            restaurant_id)
+        # Call SQLalchemy to stage the data to be written...
+        session.add(newItem)
+        # ... and now write the data to the DB.
+        session.commit()
+        # Alert the user.
+        flash("New menu item created.")
+        # Redirect the client to the menu page for this restaurant.
+        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+            )
 
+    else:
+        # Answer GETs by returning the newmenuitem.html file to the client.
+        return render_template('newmenuitem.html', restaurant_id =
+            restaurant_id)
+
+
+# Create a decorator from Flask.app.route() to bind editMenuItem with the URL
+# /restaurant/<restaurant_id>/<menu_id>/edit/, , allow GET or POST methods.
+@app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/', methods=[
+    'GET','POST'])
+def editMenuItem(restaurant_id, menu_id):
+    # Handle updates to existing menu items in the database.
+    # Answer POSTs by writing user input to the database.
+    # Answer GETs by returning the editmenuitem.html file to the client.
+    '''
+    Handles GETs or POSTs to the URL:
+    
+        /restaurant/<restaurant_id>/<menu_id>/edit/
+    
+    and writes the user's input to the database, after which, POSTs are 
+    redirected to the menu page for the restaurant specified by the original 
+    restaurant_id argument. GETs simply return a populated template named 
+    editmenuitem.html.
+
+    Args: 
+        int restaurant_id
+        int menu_id
+    '''
+    # Use SQLalchemy to query the MenuItem table for our menu_id.
+    editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
+    if request.method == 'POST':
+        # Grab the user input from the HTML form.
+        if request.form['name']:
+            # Set the name attribute to the value from the form.
+            editedItem.name = request.form['name']
+        # Stage for writing to the DB.
+        session.add(editedItem)
+        # Write to the DB.
+        session.commit()
+        # Alert the user.
+        flash("Menu item edited.")
+        # Redirect the client to the menu page for this restaurant, building
+        # the URL from that specified by the decorator of restaurantMenu().
+        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+            )
+    else:
+        # For GETs, return an edit page for that menu item.
+        return render_template('editmenuitem.html', restaurant_id = restaurant_id, menu_id = menu_id, i = editedItem)
+
+
+@app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/delete', methods=[
+    'GET','POST'])
+def deleteMenuItem(restaurant_id, menu_id):
+    # Handle deletions of existing menu items in the database.
+    # Answer POSTs by deleting the row in the MenuItem table of the database
+    # which the user specified with two numeric arguments.
+    # Answer GETs by returning the deletemenuitem.html file to the client.
+    '''
+    Handles GETs or POSTs to the URL:
+    
+        /restaurants/<restaurant_id>/<menu_id>/delete/ 
+    
+    and deletes the specified menu item from the database, after which, POSTs 
+    are redirected to the menu page for the restaurant specified by the 
+    original restaurant_id argument. GETs simply return a populated template 
+    named deletemenuitem.html.
+
+    Args: 
+        int restaurant_id
+        int menu_id
+    '''
+    # Use SQLalchemy to query the MenuItem table for our menu_id.
+    deletedItem = session.query(MenuItem).filter_by(id = menu_id).one()
+    if request.method == 'POST':
+        # Stage for persisting to the DB.
+        session.delete(deletedItem)
+        # Delete the record from the DB.
+        session.commit()
+        # Alert the user.
+        flash("Menu item deleted.")
+        # Redirect the client to the menu page for this restaurant, building
+        # the URL from that specified by the decorator of restaurantMenu().
+        return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id)
+            )
+    else:
+        # For GETs, return an edit page for that menu item.
+        return render_template('deletemenuitem.html', restaurant_id =
+            restaurant_id, menu_id = menu_id, i = deletedItem)
 
 
 
