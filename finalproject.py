@@ -256,7 +256,15 @@ def deleteMenuItem(restaurant_id, menu_id):
 @app.route('/restaurant/')
 @app.route('/')
 def showRestaurants():
-    return render_template('restaurants.html')
+    """
+    Query the Restaurant table and return an object containing the restaurant
+    names sorted alphabetically.
+    """
+    # Create an object containing a list of all rows in the Restaurant table,
+    # and sort by name.
+    restaurant_names = session.query(Restaurant).order_by(Restaurant.name).all()
+
+    return render_template('restaurants.html', restaurant_names = restaurant_names)
 
 
 @app.route('/restaurant/new/')
@@ -266,7 +274,11 @@ def newRestaurant():
 
 @app.route('/restaurant/<int:restaurant_id>/edit/')
 def editRestaurant(restaurant_id):
-    return render_template('editrestaurant.html', restaurant_id = restaurant_id)
+    # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
+    this_restaurant = session.query(Restaurant).filter_by(id=
+        restaurant_id).one()
+
+    return render_template('editrestaurant.html', restaurant_id = this_restaurant.id)
 
 
 @app.route('/restaurant/<int:restaurant_id>/delete/')
