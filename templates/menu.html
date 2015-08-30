@@ -3,7 +3,7 @@
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<div class = 'pane'>
+        <div class = 'pane'>
 		<div class='header'>
 			<h1>List of Restaurants</h1>
 		</div>
@@ -24,7 +24,7 @@
 
 	<div>
 		<p>
-                    This page will show all restaurants.
+                    <a href='{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}'>Create New Menu Item</a>
 		</p>
 
 	</div>
@@ -40,6 +40,9 @@
 	<div class='description'>
 		<p>{{i.description}}</p>
 	</div>
+
+ 
+ 	</div>
 
 	<div class = "editdeletepane">
 		<p> 
