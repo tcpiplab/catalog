@@ -1,1 +1,57 @@
 This page will show all restaurants.
+<html>
+<head>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+        <div class = 'pane'>
+		<div class='header'>
+			<h1>List of Restaurants</h1>
+		</div>
+	</div>
+	<div class='flash'>
+		<!--MESSAGE FLASHING EXAMPLE -->
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+
+		<ul>
+			{% for message in messages %}
+			<li><strong>{{message}}</strong></li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% endwith %}
+	</div>
+
+	<div>
+		<p>
+                    <a href='{{ url_for('newRestaurant') }}'>Create New Restaurant</a>
+		</p>
+
+	</div>
+
+	{% for i in restaurant_names %}
+
+	<div class = 'nameAndPrice'>
+
+		<span class = 'name'><p>{{i.name}}</p></span>
+
+ 	</div>
+
+	<div class = "editdeletepane">
+		<p> 
+                    <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}'>Edit</a>
+		</p>
+
+		<p>
+                    <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}'>Delete</a>
+		</p>
+	
+
+
+{% endfor %}
+</div>
+</div>
+</body>
+
+</html>
