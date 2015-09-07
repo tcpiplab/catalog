@@ -302,14 +302,53 @@ def newRestaurant():
         # Answer GETs by returning the newrestaurant.html file to the client.
         return render_template('newrestaurant.html')
 
-
-@app.route('/restaurant/<int:restaurant_id>/edit/')
+# Create a decorator from Flask.app.route() to bind editRestaurant with the URL
+# /restaurant/<restaurant_id>/edit/, , allow GET or POST methods.
+@app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET','POST'])
 def editRestaurant(restaurant_id):
-    # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
-    this_restaurant = session.query(Restaurant).filter_by(id=
-        restaurant_id).one()
+    # Handle updates to existing restaurants in the database.
+    # Answer POSTs by writing user input to the database.
+    # Answer GETs by returning the editrestaurant.html file to the client.
+    '''
+    Handles GETs or POSTs to the URL:
+    
+        /restaurant/<restaurant_id>/edit/
+    
+    and writes the user's input to the database, after which, POSTs are 
+    redirected to the name edit page for the restaurant specified by the 
+    original restaurant_id argument. GETs simply return a populated template 
+    named editrestaurant.html.
 
-    return render_template('editrestaurant.html', restaurant_id = this_restaurant.id)
+    Args: 
+        int restaurant_id
+    '''
+    # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
+    #this_restaurant = session.query(Restaurant).filter_by(id=
+    #    restaurant_id).one()
+    #return render_template('editrestaurant.html', restaurant_id = this_restaurant.id)
+
+    # Use SQLalchemy to query the Restaurant table for our restaurant_id.
+    editedRestaurant = session.query(Restaurant).filter_by(
+        id = restaurant_id).one()
+    if request.method == 'POST':
+        # Grab the user input from the HTML form.
+        if request.form['name']:
+            # Set the name attribute to the value from the form.
+            editedRestaurant.name = request.form['name']
+        # Stage for writing to the DB.
+        session.add(editedRestaurant)
+        # Write to the DB.
+        session.commit()
+        # Alert the user.
+        flash("Restaurant name edited.")
+        # Redirect the client to the page showing all restaurants, building
+        # the URL from that specified by the decorator of showRestaurants().
+        return redirect(url_for('showRestaurants', restaurant_id = restaurant_id)
+            )
+    else:
+        # For GETs, return an edit page for that restaurant.
+        return render_template('editrestaurant.html', 
+            restaurant_id = restaurant_id, i = editedRestaurant)
 
 
 @app.route('/restaurant/<int:restaurant_id>/delete/')
