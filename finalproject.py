@@ -132,7 +132,7 @@ def showMenu(restaurant_id):
 # /restaurant/<restaurant_id>/new/, allow GET or POST methods.
 @app.route('/restaurant/<int:restaurant_id>/new/', methods=['GET','POST'])
 def newMenuItem(restaurant_id):
-    # Handle creation of new restaurants in the database.
+    # Handle creation of new menu items in the database.
     # Answer POSTs by writing user input to the database.
     # Answer GETs by returning the newmenuitem.html file to the client.
     '''
@@ -266,10 +266,41 @@ def showRestaurants():
 
     return render_template('restaurants.html', restaurant_names = restaurant_names)
 
-
-@app.route('/restaurant/new/')
+# Create a decorator from Flask.app.route() to bind newRestaurant with the URL
+# /restaurant/new/, allow GET or POST methods.
+@app.route('/restaurant/new/', methods=['GET','POST'])
 def newRestaurant():
-    return render_template('newrestaurant.html')
+    # Handle creation of new restaurants in the database.
+    # Answer POSTs by writing user input to the database.
+    # Answer GETs by returning the newmenuitem.html file to the client.
+    '''
+    Handles GETs or POSTs to the URL:
+    
+        /restaurant/new/ 
+    
+    and writes the user's input to the database, after which, POSTs are 
+    redirected to the restaurants.html page listing all restaurants.
+    
+    Args: 
+        None.
+    '''
+    # Answer GETs or POSTs to this URL. 
+    # For the latter, grab the user input and write it to the database.
+    if request.method == 'POST':
+        # Grab the user input from the HTML form.
+        newRestaurant = Restaurant(name = request.form['name'])
+        # Call SQLalchemy to stage the data to be written...
+        session.add(newRestaurant)
+        # ... and now write the data to the DB.
+        session.commit()
+        # Alert the user.
+        flash("New restaurantcreated.")
+        # Redirect the client to the menu page for this restaurant.
+        return redirect(url_for('showRestaurants'))
+
+    else:
+        # Answer GETs by returning the newrestaurant.html file to the client.
+        return render_template('newrestaurant.html')
 
 
 @app.route('/restaurant/<int:restaurant_id>/edit/')
