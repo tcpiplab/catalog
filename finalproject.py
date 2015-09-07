@@ -294,7 +294,7 @@ def newRestaurant():
         # ... and now write the data to the DB.
         session.commit()
         # Alert the user.
-        flash("New restaurantcreated.")
+        flash("New restaurant created.")
         # Redirect the client to the menu page for this restaurant.
         return redirect(url_for('showRestaurants'))
 
