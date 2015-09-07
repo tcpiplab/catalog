@@ -341,8 +341,7 @@ def editRestaurant(restaurant_id):
         session.commit()
         # Alert the user.
         flash("Restaurant name edited.")
-        # Redirect the client to the page showing all restaurants, building
-        # the URL from that specified by the decorator of showRestaurants().
+        # Redirect the client to the page showing all restaurants.
         return redirect(url_for('showRestaurants', restaurant_id = restaurant_id)
             )
     else:
@@ -351,11 +350,42 @@ def editRestaurant(restaurant_id):
             restaurant_id = restaurant_id, i = editedRestaurant)
 
 
-@app.route('/restaurant/<int:restaurant_id>/delete/')
+@app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET','POST'])
 def deleteRestaurant(restaurant_id):
-    return render_template('deleterestaraunt.html', restaurant_id = restaurant_id)
+    # Handle deletions of existing restaurants in the database.
+    # Answer POSTs by deleting the row in the Restaurant table of the database
+    # which the user specified with a numeric argument.
+    # Answer GETs by returning the deleterestaraunt.html file to the client.
+    '''
+    Handles GETs or POSTs to the URL:
+    
+        /restaurants/<restaurant_id>/delete/ 
+    
+    and deletes the specified restaurant from the database, after which, POSTs 
+    are redirected to the restaurants.html page listing all restaurants.
+    GETs simply return a populated template named deleterestaraunt.html.
 
-
+    Args: 
+        int restaurant_id
+    '''
+    # Use SQLalchemy to query the Restaurant table for our restaurant_id.
+    deletedRestaurant = session.query(Restaurant).filter_by(
+        id = restaurant_id).one()
+    if request.method == 'POST':
+        # Stage for persisting to the DB.
+        session.delete(deletedRestaurant)
+        # Delete the record from the DB.
+        session.commit()
+        # Alert the user.
+        flash("Restaurant deleted.")
+        # Redirect the client to the restaurants.html page listing all 
+        # restaurants.
+        return redirect(url_for(
+            'showRestaurants', restaurant_id = restaurant_id))
+    else:
+        # For GETs, return an edit page for that restaurant.
+        return render_template('deleterestaraunt.html', restaurant_id =
+            restaurant_id, i = deletedRestaurant)
 
 
 # If this file is called directly, i.e., not called as an import, run the code 
