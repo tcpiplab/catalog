@@ -204,6 +204,13 @@ def editMenuItem(restaurant_id, menu_id):
         if request.form['name']:
             # Set the name attribute to the value from the form.
             editedItem.name = request.form['name']
+        if request.form['description']:
+            editedItem.description = request.form['description']
+        if request.form['price']:
+            editedItem.price = request.form['price']
+        if request.form['course']:
+            editedItem.course = request.form['course']
+        
         # Stage for writing to the DB.
         session.add(editedItem)
         # Write to the DB.
