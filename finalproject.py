@@ -118,14 +118,19 @@ def showMenu(restaurant_id):
     '''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-
-    # Call SQLalchemy to query for that restaurant's menu items.
+   
+    # Call SQLalchemy to query for that restaurant's menu items. 
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
 
-    # Return a template (located in a dir called templates) and pass the 
-    # queries so that the escape code in the template has access to the 
-    # variables that will populate the template.
-    return render_template('menu.html', restaurant=restaurant, items=items)
+    # If this restaurant's menu is not empty
+    if (len(items.all()) > 0):
+        # Return a template (located in a dir called templates) and pass the 
+        # queries so that the escape code in the template has access to the 
+        # variables that will populate the template.
+        return render_template('menu.html', restaurant=restaurant, items=items)
+    else:
+        # Return our "there is no menu" page.
+        return render_template('nomenu.html', restaurant=restaurant)
 
 
 # Create a decorator from Flask.app.route() to bind newMenuItem with the URL
