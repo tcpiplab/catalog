@@ -106,13 +106,14 @@ def menuItemJSON(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/')
 def showMenu(restaurant_id):
     # Display a specific restaurant's menu populating an HTML template.
+    # Or return nomenu.html if the menu is empty.
     '''
     For the URL: 
     
         /restaurant/<int:restaurant_id>/
 
     return an HTML template populated with the menu for that specific 
-    restaurant.
+    restaurant. Or return nomenu.html if the menu is empty.
     Args:
         int restaurant_id
     '''
