@@ -9,7 +9,7 @@ from flask import Flask, render_template, url_for, request, redirect, \
     flash, jsonify
 
 # Create an instance of the Flask class with the name of the running application
-# as the argument. 
+# as the argument.
 app = Flask(__name__)
 
 from sqlalchemy import create_engine
@@ -42,19 +42,19 @@ def allRestaurantsJSON():
     # An API endpoint for JSON GET requests for a list of all restaurants.
     '''
     For the URL:
-    
+
         /restaurant/JSON
-    
-    return a JSON formatted structure containing the name and id of all 
+
+    return a JSON formatted structure containing the name and id of all
     restaurants, sorted by name.
     '''
 
-    # Call SQLalchemy to create an object containing a list of all rows in the 
+    # Call SQLalchemy to create an object containing a list of all rows in the
     # Restaurant table, sorted by name.
     listOfRestaurants = session.query(
         Restaurant).order_by(Restaurant.name).all()
 
-    # Iterate over the list, calling Restaurant.serialize(), 
+    # Iterate over the list, calling Restaurant.serialize(),
     # wrap in flask.jsonify() for JSON output.
     return jsonify(MenuItem=[i.serialize for i in listOfRestaurants])
 
@@ -63,10 +63,10 @@ def allRestaurantsJSON():
 def restaurantMenuJSON(restaurant_id):
     # An API endpoint for JSON GET requests per restaurant.
     '''
-    For the URL: 
-    
+    For the URL:
+
         /restaurant/<int:restaurant_id>/menu/JSON
-    
+
     return a JSON formatted structure containing that specific restaurant's
     menu.
     Args:
@@ -88,9 +88,9 @@ def menuItemJSON(restaurant_id, menu_id):
     # An API endpoint for JSON GET requests per menu item.
     '''
     For the URL:
-    
-        /restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON 
-    
+
+        /restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON
+
     return a JSON formatted structure containing that specific menu item's
     data..
     Args:
@@ -108,25 +108,25 @@ def showMenu(restaurant_id):
     # Display a specific restaurant's menu populating an HTML template.
     # Or return nomenu.html if the menu is empty.
     '''
-    For the URL: 
-    
+    For the URL:
+
         /restaurant/<int:restaurant_id>/
 
-    return an HTML template populated with the menu for that specific 
+    return an HTML template populated with the menu for that specific
     restaurant. Or return nomenu.html if the menu is empty.
     Args:
         int restaurant_id
     '''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-   
-    # Call SQLalchemy to query for that restaurant's menu items. 
+
+    # Call SQLalchemy to query for that restaurant's menu items.
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
 
     # If this restaurant's menu is not empty
     if (len(items.all()) > 0):
-        # Return a template (located in a dir called templates) and pass the 
-        # queries so that the escape code in the template has access to the 
+        # Return a template (located in a dir called templates) and pass the
+        # queries so that the escape code in the template has access to the
         # variables that will populate the template.
         return render_template('menu.html', restaurant=restaurant, items=items)
     else:
@@ -143,17 +143,17 @@ def newMenuItem(restaurant_id):
     # Answer GETs by returning the newmenuitem.html file to the client.
     '''
     Handles GETs or POSTs to the URL:
-    
-        /restaurant/<restaurant_id>/new/ 
-    
-    and writes the user's input to the database, after which, POSTs are 
-    redirected to the menu page for the restaurant specified by the original 
+
+        /restaurant/<restaurant_id>/new/
+
+    and writes the user's input to the database, after which, POSTs are
+    redirected to the menu page for the restaurant specified by the original
     restaurant_id argument.
-    
-    Args: 
+
+    Args:
         int restaurant_id
     '''
-    # Given the numeric id of a restaurant, answer GETs or POSTs to this URL. 
+    # Given the numeric id of a restaurant, answer GETs or POSTs to this URL.
     # For the latter, grab the user input and write it to the database.
     if request.method == 'POST':
         # Grab the user input from the HTML form.
@@ -185,15 +185,15 @@ def editMenuItem(restaurant_id, menu_id):
     # Answer GETs by returning the editmenuitem.html file to the client.
     '''
     Handles GETs or POSTs to the URL:
-    
+
         /restaurant/<restaurant_id>/<menu_id>/edit/
-    
-    and writes the user's input to the database, after which, POSTs are 
-    redirected to the menu page for the restaurant specified by the original 
-    restaurant_id argument. GETs simply return a populated template named 
+
+    and writes the user's input to the database, after which, POSTs are
+    redirected to the menu page for the restaurant specified by the original
+    restaurant_id argument. GETs simply return a populated template named
     editmenuitem.html.
 
-    Args: 
+    Args:
         int restaurant_id
         int menu_id
     '''
@@ -210,7 +210,7 @@ def editMenuItem(restaurant_id, menu_id):
             editedItem.price = request.form['price']
         if request.form['course']:
             editedItem.course = request.form['course']
-        
+
         # Stage for writing to the DB.
         session.add(editedItem)
         # Write to the DB.
@@ -235,15 +235,15 @@ def deleteMenuItem(restaurant_id, menu_id):
     # Answer GETs by returning the deletemenuitem.html file to the client.
     '''
     Handles GETs or POSTs to the URL:
-    
-        /restaurants/<restaurant_id>/<menu_id>/delete/ 
-    
-    and deletes the specified menu item from the database, after which, POSTs 
-    are redirected to the menu page for the restaurant specified by the 
-    original restaurant_id argument. GETs simply return a populated template 
+
+        /restaurants/<restaurant_id>/<menu_id>/delete/
+
+    and deletes the specified menu item from the database, after which, POSTs
+    are redirected to the menu page for the restaurant specified by the
+    original restaurant_id argument. GETs simply return a populated template
     named deletemenuitem.html.
 
-    Args: 
+    Args:
         int restaurant_id
         int menu_id
     '''
@@ -288,16 +288,16 @@ def newRestaurant():
     # Answer GETs by returning the newmenuitem.html file to the client.
     '''
     Handles GETs or POSTs to the URL:
-    
-        /restaurant/new/ 
-    
-    and writes the user's input to the database, after which, POSTs are 
+
+        /restaurant/new/
+
+    and writes the user's input to the database, after which, POSTs are
     redirected to the restaurants.html page listing all restaurants.
-    
-    Args: 
+
+    Args:
         None.
     '''
-    # Answer GETs or POSTs to this URL. 
+    # Answer GETs or POSTs to this URL.
     # For the latter, grab the user input and write it to the database.
     if request.method == 'POST':
         # Grab the user input from the HTML form.
@@ -324,15 +324,15 @@ def editRestaurant(restaurant_id):
     # Answer GETs by returning the editrestaurant.html file to the client.
     '''
     Handles GETs or POSTs to the URL:
-    
+
         /restaurant/<restaurant_id>/edit/
-    
-    and writes the user's input to the database, after which, POSTs are 
-    redirected to the name edit page for the restaurant specified by the 
-    original restaurant_id argument. GETs simply return a populated template 
+
+    and writes the user's input to the database, after which, POSTs are
+    redirected to the name edit page for the restaurant specified by the
+    original restaurant_id argument. GETs simply return a populated template
     named editrestaurant.html.
 
-    Args: 
+    Args:
         int restaurant_id
     '''
     # Call SQLalchemy to query the Restaurant table by the restaurant_id arg.
@@ -359,7 +359,7 @@ def editRestaurant(restaurant_id):
             )
     else:
         # For GETs, return an edit page for that restaurant.
-        return render_template('editrestaurant.html', 
+        return render_template('editrestaurant.html',
             restaurant_id = restaurant_id, i = editedRestaurant)
 
 
@@ -371,14 +371,14 @@ def deleteRestaurant(restaurant_id):
     # Answer GETs by returning the deleterestaraunt.html file to the client.
     '''
     Handles GETs or POSTs to the URL:
-    
-        /restaurants/<restaurant_id>/delete/ 
-    
-    and deletes the specified restaurant from the database, after which, POSTs 
+
+        /restaurants/<restaurant_id>/delete/
+
+    and deletes the specified restaurant from the database, after which, POSTs
     are redirected to the restaurants.html page listing all restaurants.
     GETs simply return a populated template named deleterestaraunt.html.
 
-    Args: 
+    Args:
         int restaurant_id
     '''
     # Use SQLalchemy to query the Restaurant table for our restaurant_id.
@@ -391,7 +391,7 @@ def deleteRestaurant(restaurant_id):
         session.commit()
         # Alert the user.
         flash("Restaurant deleted.")
-        # Redirect the client to the restaurants.html page listing all 
+        # Redirect the client to the restaurants.html page listing all
         # restaurants.
         return redirect(url_for(
             'showRestaurants', restaurant_id = restaurant_id))
@@ -401,17 +401,16 @@ def deleteRestaurant(restaurant_id):
             restaurant_id, i = deletedRestaurant)
 
 
-# If this file is called directly, i.e., not called as an import, run the code 
+# If this file is called directly, i.e., not called as an import, run the code
 # through the Python interpreter.
 if __name__ == '__main__':
     # Flask will use this key to create sessions for our users.
     app.secret_key = 'tB.IWZ3baukJ_'
 
-    # With debug running, the Flask web server will reload itself each time 
+    # With debug running, the Flask web server will reload itself each time
     # it notices a code change. It also provides a debugger in the browser.
     app.debug = True
 
     # Run the local web server with our application.
     # Listen on all public IPs - required because we're running vagrant.
     app.run(host='0.0.0.0', port=5000)
-
