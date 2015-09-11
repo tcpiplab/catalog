@@ -5,8 +5,9 @@
 # Fullstack Nanodegree at Udacity.com.
 # Fullstack Foundations course, Final Project.
 
+import os
 from flask import Flask, render_template, url_for, request, redirect, \
-    flash, jsonify
+    flash, jsonify, send_from_directory
 
 # Create an instance of the Flask class with the name of the running application
 # as the argument.
@@ -399,6 +400,32 @@ def deleteRestaurant(restaurant_id):
         # For GETs, return an edit page for that restaurant.
         return render_template('deleterestaraunt.html', restaurant_id =
             restaurant_id, i = deletedRestaurant)
+
+
+@app.route('/README.txt')
+def showAboutPage():
+    # Display the local README.txt file as an about page.
+    '''
+    For the URL:
+
+        /README.txt
+
+    return a plaintext file, README.txt, from the local root directory.
+    '''
+    try:
+        # This should return '/vagrant'
+        root_dir = os.path.dirname(os.getcwd())
+
+    except Exception as e :
+        print e
+
+    filename = 'README.txt'
+
+    try:
+        # A 'catalog' dir is between '/vagrant' and the 'README.txt' file.
+        return send_from_directory(os.path.join(root_dir, 'catalog'), filename)
+    except Exception as e :
+        print e
 
 
 # If this file is called directly, i.e., not called as an import, run the code
