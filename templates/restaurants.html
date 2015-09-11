@@ -22,6 +22,13 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <!-- Tooltips must be manually initialized -->
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+    </script>
+
   </head>
   <body>
 
@@ -66,19 +73,19 @@
     </div>
     <div class='container'>
       <p style="margin-bottom: 40px;">
-        <a href='{{ url_for('newRestaurant') }}' role="button" class="btn btn-lg btn-primary">Create New Restaurant</a>
+        <a href='{{ url_for('newRestaurant') }}' role="button" class="btn btn-lg btn-primary" style="margin-right: 15px;">Create New Restaurant</a>
       </p>
       {% for i in restaurant_names %}
       <div class='well'>
         <div class='name' >
           <h2>
-              <a href='{{ url_for('showMenu', restaurant_id = i.id) }}'>{{i.name}} </a>
+              <a href='{{ url_for('showMenu', restaurant_id = i.id) }}' data-toggle="tooltip" data-placement="top" title="Click to view menu">{{i.name}} </a>
           </h2>
         </div>
         <div class='editdeletepane'>
           <p>
-            <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;">Edit</a>
-            <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default">Delete</a>
+            <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;" data-toggle="tooltip" data-placement="bottom" title="Edit restaurant name">Edit</a>
+            <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;" data-toggle="tooltip" data-placement="bottom" title="Delete this restaurant">Delete</a>
           </p>
         </div>
       </div> <!-- end .well -->
