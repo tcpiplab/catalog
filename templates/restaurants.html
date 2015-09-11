@@ -64,28 +64,27 @@
 	{% endif %}
       {% endwith %}
     </div>
-    <div>
-      <p>
-        <a href='{{ url_for('newRestaurant') }}'>Create New Restaurant</a>
+    <div class='container'>
+      <p style="margin-bottom: 40px;">
+        <a href='{{ url_for('newRestaurant') }}' role="button" class="btn btn-lg btn-primary">Create New Restaurant</a>
       </p>
       {% for i in restaurant_names %}
-        <div class='name'>
-          <p>
+      <div class='well'>
+        <div class='name' >
+          <h2>
               <a href='{{ url_for('showMenu', restaurant_id = i.id) }}'>{{i.name}} </a>
-          </p>
+          </h2>
         </div>
         <div class='editdeletepane'>
           <p>
-            <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}'>Edit</a>
+            <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;">Edit</a>
+            <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default">Delete</a>
           </p>
         </div>
-        <div class='editdeletepane'>
-          <p>
-            <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}'>Delete</a>
-          </p>
-        </div>
+      </div> <!-- end .well -->
+        {% endfor %}
     </div>
-      {% endfor %}
+
     </div><!-- /.container -->
 
     <!-- Bootstrap core JavaScript
