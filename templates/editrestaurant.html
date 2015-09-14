@@ -1,48 +1,32 @@
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>List of Restaurants</title>
+  {% include 'header.html' %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <!-- Tooltips must be manually initialized -->
-    <script>
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      })
-    </script>
+  <title>Edit Restaurant Name</title>
 
   </head>
-<body>
-<h1> Edit Restaurant </h1>
 
-<form action="{{url_for('editRestaurant', restaurant_id=restaurant_id )}}" method = 'POST'>
+  <body>
 
-<p>Restaurant Name:</p>
+  {% include 'nav.html' %}
 
-<input type='text' size='30' name='name' placeholder='{{i.name}}'>
 
-<input type='submit' value='Add'>
+  <div class="container">
+    <div class="starter-template" style="padding-top: 40px; padding-bottom: 40px; padding-left: 15px; padding-right: 15px;">
+      <h1>Edit Restaurant</h1>
+      <p class="lead">Edit the name of this restaurant.</p>
+    </div>
+  </div>
 
-<a href="{{url_for('showRestaurants', restaurant_id=i.restaurant_id)}}">Cancel</a>
+  <div class='container'>
+    <div class='well'>
+      <form action="{{url_for('editRestaurant', restaurant_id=restaurant_id )}}" method='POST' style="margin-top: 14px;">
+        <div>
+          <input type='text' size='30' name='name' placeholder='{{i.name}}'>
+        </div>
+        <input type='submit' value='Add' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;" data-toggle="tooltip" data-placement="bottom" title="Save the new name">
+        <a href="{{url_for('showRestaurants', restaurant_id=i.restaurant_id)}}" role="button" class="btn btn-sm btn-default" style="margin-right: 15px;">Cancel</a>
+      </form>
+    </div>
+  </div>
 
-</form>
-
-</body>
-</html>
+  {% include 'footer.html' %}
