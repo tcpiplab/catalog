@@ -105,7 +105,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2015-09-14 06:03:46 +0000</string>
+	<string>2015-09-15 06:20:37 +0000</string>
 	<key>Modifier</key>
 	<string>Luke Sheppard</string>
 	<key>NotesVisible</key>
@@ -1448,7 +1448,7 @@
 			<key>BackgroundGraphic</key>
 			<dict>
 				<key>Bounds</key>
-				<string>{{0, 0}, {510, 2000}}</string>
+				<string>{{0, 0}, {1024, 2048}}</string>
 				<key>Class</key>
 				<string>SolidGraphic</string>
 				<key>ID</key>
@@ -1467,7 +1467,7 @@
 			<key>CanvasOrigin</key>
 			<string>{0, 0}</string>
 			<key>CanvasSize</key>
-			<string>{510, 2000}</string>
+			<string>{1024, 2048}</string>
 			<key>ColumnAlign</key>
 			<integer>1</integer>
 			<key>ColumnSpacing</key>
@@ -2602,7 +2602,7 @@ Edit Restaurant}</string>
 				</dict>
 			</dict>
 			<key>HPages</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>KeepToScale</key>
 			<false/>
 			<key>Layers</key>
@@ -2994,7 +2994,7 @@ Edit Restaurant}</string>
 		<key>Expanded_Canvases</key>
 		<array/>
 		<key>Frame</key>
-		<string>{{626, -3}, {1158, 1173}}</string>
+		<string>{{626, 4}, {1158, 1173}}</string>
 		<key>ShowInfo</key>
 		<true/>
 		<key>ShowRuler</key>
@@ -3008,7 +3008,7 @@ Edit Restaurant}</string>
 		<key>TopSlabHeight</key>
 		<real>484</real>
 		<key>VisibleRegion</key>
-		<string>{{-160, 9}, {830, 1016}}</string>
+		<string>{{0, 9}, {830, 1001}}</string>
 		<key>Zoom</key>
 		<real>1</real>
 		<key>ZoomValues</key>
