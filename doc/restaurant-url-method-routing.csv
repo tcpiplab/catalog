@@ -1,30 +1,34 @@
-URL,Method,Template,Message or Status of Iteration 0,Comment,Old Origin,TODO,,,
+URL,Method,Template,Message or Status,Comment,Old Origin,TODO,Wireframe Filename,,
 /restaurant/JSON,allRestaurantsJSON(),None,Iteration 0 done in finalproject.py,,None,,,,
 /restaurant/<int:restaurant_id>/menu/JSON,restaurantMenuJSON(),None,Iteration 0 done in finalproject.py,API endpoint for JSON GET requests per restaurant,project.py,,,,
 /restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON,menuItemJSON(),None,Iteration 0 done in finalproject.py,API endpoint for JSON GET requests per menu item.,project.py,,,,
 "/restaurant/<int:restaurant_id>/
 
 Also without the trailing slash:
-/restaurant/<int:restaurant_id>",showMenu(),menu.html,Iteration 0 done in finalproject.py,Display a specific restaurant's menu.,"project.py
-restaurantMenu()",Add restaurant.name to template.,,,
+/restaurant/<int:restaurant_id>",showMenu(),menu.html,Iteration 1 done,Display a specific restaurant's menu.,"project.py
+restaurantMenu()",,"menu-page.graffle  Done",,
+"/restaurant/<int:restaurant_id>/
+
+Also without the trailing slash:
+/restaurant/<int:restaurant_id>",showMenu(),nomenu.html,Iteration 0 done in finalproject.py,,none,"Improve HTML and CSS. Finish wireframe.",,,
 /restaurant/<int:restaurant_id>/new/,newMenuItem(),newmenuitem.html,Iteration 0 done in finalproject.py,Handle creation of a new menu item in the database. Answer POSTs by writing user input to the database. Answer GETs by returning the newmenuitem.html file to the client.,"project.py
-newMenuItem()",,,,
+newMenuItem()",Improve HTML and CSS.,,,
 /restaurant/<int:restaurant_id>/<int:menu_id>/edit/,editMenuItem(),editmenuitem.html,Iteration 0 done in finalproject.py,Handle updates to existing menu items in the database. Answer POSTs by writing user input to the database. Answer GETs by returning the editmenuitem.html file to the client.,"project.py
-editMenuItem()",,,,
+editMenuItem()",Improve HTML and CSS.,,,
 /restaurant/<int:restaurant_id>/<int:menu_id>/delete,deleteMenuItem(),deletemenuitem.html,Iteration 0 done in finalproject.py,Handle deletions of existing menu items in the database. Answer POSTs by deleting the row in the MenuItem table of the database which the user specified with two numeric arguments. Answer GETs by returning the deletemenuitem.html file to the client.,"project.py
-deleteMenuItem()",,,,
+deleteMenuItem()",Improve HTML and CSS.,,,
 "/restaurant/
 Also the root directory:
-/",showRestaurants(),restaurants.html,Iteration 0 done in finalproject.py,Show all restaurants.,"webserver.py
-queryAllRestaurants()",Improve HTML and CSS.,,,
-/restaurant/new/,newRestaurant(),newrestaurant.html,Iteration 0 done in finalproject.py,Create a new restaurant.,"webserver.py
+/",showRestaurants(),restaurants.html,Iteration 1 done,Show all restaurants.,"webserver.py
+queryAllRestaurants()",,"mainpage-bootstrap.graffle  Done",,
+/restaurant/new/,newRestaurant(),newrestaurant.html,Iteration 1 done,Create a new restaurant.,"webserver.py
 Line 268:
-session.add(newRestaurant)",Improve HTML and CSS.,,,
-/restaurant/<int:restaurant_id>/edit/,editRestaurant(),editrestaurant.html,Iteration 0 done in finalproject.py,Edit a restaurant.,"webserver.py
+session.add(newRestaurant)",,"newrestaurant.graffle  Done",,
+/restaurant/<int:restaurant_id>/edit/,editRestaurant(),editrestaurant.html,Iteration 1 done,Edit a restaurant.,"webserver.py
 Line 296:
-session.add(myRestaurantQuery)",Improve HTML and CSS.,,,
-/restaurant/<int:restaurant_id>/delete/,deleteRestaurant(),deleterestaraunt.html,Iteration 0 done in finalproject.py,Delete a restaurant.,"webserver.py
+session.add(myRestaurantQuery)",,"editrestaurant-bootstrap.graffle  Done",,
+/restaurant/<int:restaurant_id>/delete/,deleteRestaurant(),deleterestaraunt.html,Iteration 1 done,Delete a restaurant.,"webserver.py
 Line 224:
-session.delete(myRestaurantQuery)",Improve HTML and CSS.,,,
+session.delete(myRestaurantQuery)",,,,
 ,,,,,,,,,
 ,,,,,,,,,
