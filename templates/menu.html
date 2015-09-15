@@ -1,72 +1,49 @@
-<html>
+{% include 'header.html' %}
 
-<head>
-	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+<title>Menu</title>
+
 </head>
 
 <body>
-	<div class='pane'>
-		<div class='header'>
+
+  {% include 'nav.html' %}
+
+	<div class="container">
+    <div class="starter-template">
 			<h1>Menu For {{restaurant.name}}</h1>
-		</div>
-	</div>
-	<div class='flash'>
-		<!--MESSAGE FLASHING EXAMPLE -->
-		{% with messages = get_flashed_messages() %} {% if messages %}
+			<p class="lead">You can edit every field displayed.</p>
+    </div>
+  </div>
 
-		<ul>
-			{% for message in messages %}
-			<li>
-				<strong>{{message}}</strong>
-			</li>
-			{% endfor %}
-		</ul>
-		{% endif %} {% endwith %}
-	</div>
+  {% include 'flash.html'%}
 
-	<div>
-		<p>
-			<a href='{{ url_for('showRestaurants') }}'>Home</a>
-		</p>
-		<p>
-			<a href='{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}'>Create New Menu Item</a>
-		</p>
+  <div class='container'>
+	  <p class='button-create'>
+		  <a href='{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}' role="button" class="btn btn-lg btn-primary">Create New Menu Item</a>
+    </p>
 
-	</div>
+	  {% for i in items %}
 
-	{% for i in items %}
-
-	<div class='nameAndPrice'>
-
-		<span class='name'>
-			<p>{{i.name}}</p>
-		</span>
-
-		<span class='price'>
-			<p> {{i.price}} </p>
-		</span>
-	</div>
-	<div class='description'>
-		<p>{{i.description}}</p>
-	</div>
-
-
-	</div>
-
-	<div class="editdeletepane">
-		<p>
-			<a href='{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_id=i.id) }}'>Edit</a>
-		</p>
-
-		<p>
-			<a href='{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id=i.id) }}'>Delete</a>
-		</p>
-
-
+	  <div class='well'>
+			<div class='name'>
+        <h2>
+          <p class='menu-item'>{{i.name}}</p>
+					<div class='menu-price'>{{i.price}}</div>
+        </h2>
+      </div>
+			<div class="menu-description">
+				{{i.description}}
+      </div>
+			<div>
+        <p>
+          <a href='{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_id=i.id) }}' role="button" class="btn btn-sm btn-default editdelete-buttons" data-toggle="tooltip" data-placement="bottom" title="Edit menu item name">Edit</a>
+          <a href='{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id=i.id) }}' role="button" class="btn btn-sm btn-default editdelete-buttons" data-toggle="tooltip" data-placement="bottom" title="Delete this menu item">Delete</a>
+        </p>
+      </div>
+			</div><!-- end .well -->
 
 		{% endfor %}
-	</div>
-	</div>
-</body>
 
-</html>
+	</div>
+
+	{% include 'footer.html' %}
