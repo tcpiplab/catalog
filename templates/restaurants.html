@@ -15,22 +15,16 @@
         <br> You can edit every field displayed.</p>
     </div>
   </div>
-  <div class="container flash">
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>
-        <strong>{{message}}</strong>
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
-  </div>
+
+  {% include 'flash.html'%}
+
   <div class='container'>
     <p class='button-create'>
       <a href='{{ url_for('newRestaurant') }}' role="button" class="btn btn-lg btn-primary">Create New Restaurant</a>
     </p>
+
     {% for i in restaurant_names %}
+
     <div class='well wellinline'>
       <div class='name'>
         <h2>
