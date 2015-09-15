@@ -9,7 +9,7 @@
   {% include 'nav.html' %}
 
   <div class="container">
-    <div class="starter-template" style="padding-top: 40px; padding-bottom: 10px; padding-left: 15px; padding-right: 15px;">
+    <div class="starter-template">
       <h1>List of Restaurants</h1>
       <p class="lead">This website displays menus for several restaurants.
         <br> You can edit every field displayed.</p>
@@ -27,11 +27,11 @@
     {% endif %} {% endwith %}
   </div>
   <div class='container'>
-    <p style="margin-bottom: 40px;">
-      <a href='{{ url_for('newRestaurant') }}' role="button" class="btn btn-lg btn-primary" style="margin-right: 15px;">Create New Restaurant</a>
+    <p class='button-create'>
+      <a href='{{ url_for('newRestaurant') }}' role="button" class="btn btn-lg btn-primary">Create New Restaurant</a>
     </p>
     {% for i in restaurant_names %}
-    <div class='well' style="display: inline-block; margin-right: 20px;">
+    <div class='well wellinline'>
       <div class='name'>
         <h2>
           <a href='{{ url_for('showMenu', restaurant_id = i.id) }}' data-toggle="tooltip" data-placement="top" title="Click to view menu">{{i.name}} </a>
@@ -39,8 +39,8 @@
       </div>
       <div class='editdeletepane'>
         <p>
-          <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;" data-toggle="tooltip" data-placement="bottom" title="Edit restaurant name">Edit</a>
-          <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default" style="margin-right: 15px;" data-toggle="tooltip" data-placement="bottom" title="Delete this restaurant">Delete</a>
+          <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default editdelete-buttons" data-toggle="tooltip" data-placement="bottom" title="Edit restaurant name">Edit</a>
+          <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default editdelete-buttons" data-toggle="tooltip" data-placement="bottom" title="Delete this restaurant">Delete</a>
         </p>
       </div>
     </div>
