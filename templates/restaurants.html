@@ -31,15 +31,16 @@
           <a href='{{ url_for('showMenu', restaurant_id = i.id) }}' data-toggle="tooltip" data-placement="top" title="Click to view menu">{{i.name}} </a>
         </h2>
       </div>
-      <div class='editdeletepane'>
+      <div>
         <p>
           <a href='{{ url_for('editRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default editdelete-buttons" data-toggle="tooltip" data-placement="bottom" title="Edit restaurant name">Edit</a>
           <a href='{{ url_for('deleteRestaurant', restaurant_id = i.id) }}' role="button" class="btn btn-sm btn-default editdelete-buttons" data-toggle="tooltip" data-placement="bottom" title="Delete this restaurant">Delete</a>
         </p>
       </div>
-    </div>
-    <!-- end .well -->
+    </div><!-- end .well -->
+
     {% endfor %}
+
   </div>
 
   {% include 'footer.html' %}
