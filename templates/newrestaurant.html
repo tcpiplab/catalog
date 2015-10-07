@@ -9,13 +9,13 @@
     <div class="container">
       <div class="starter-template" style="padding-top: 40px; padding-bottom: 10px; padding-left: 15px; padding-right: 15px;">
         <h1> New Restaurant</h1>
-        <p class="lead">Add a new restaurant to the database.</p>
+        <p class="my-lead">Add a new restaurant to the database.</p>
       </div>
     </div>
 
     <div class='container'>
       <div class='well' style="display: inline-block;">
-        <form action="{{url_for('newRestaurant')}}" method = 'POST' style="margin-top: 14px;">
+        <form action="{{url_for('newRestaurant')}}" method = 'POST' class='form-well'>
           <div style="margin-bottom: 10px;">
             <input type='text' size='30' name='name'>
           </div>
